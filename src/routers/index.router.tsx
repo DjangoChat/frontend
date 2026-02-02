@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router"
-import { App } from "../App"
-import { ROUTES } from "./path.router"
+import { ROUTES_KEYS } from "../constants"
+import { LandingPage } from "../features/public/screens"
 
 const router = createBrowserRouter([
   {
-    path: ROUTES.ROOT,
-    element: <App />,
+    path: ROUTES_KEYS.ROOT,
+    element: <LandingPage />,
     index: true,
   },
 ])

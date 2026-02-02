@@ -1,12 +1,20 @@
-import { Button } from "@mui/joy"
+import { DarkMode, LightMode } from "@mui/icons-material"
+import { IconButton } from "@mui/joy"
 import { useTheme } from "../hooks"
 
 export function ThemeToggleButton() {
   const { theme, toggleTheme } = useTheme()
 
   return (
-    <Button variant="outlined" onClick={toggleTheme}>
-      {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-    </Button>
+    <IconButton
+      variant="outlined"
+      color="neutral"
+      onClick={toggleTheme}
+      sx={{
+        borderRadius: "sm",
+      }}
+    >
+      {theme === "light" ? <DarkMode /> : <LightMode />}
+    </IconButton>
   )
 }
