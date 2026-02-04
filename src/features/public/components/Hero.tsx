@@ -1,6 +1,10 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/joy"
+import { useIntlayer } from "react-intlayer"
 
 export const Hero = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { title, subtitle, startMessaging, learnMore } = useIntlayer("hero")
+
   return (
     <Box
       sx={{
@@ -19,7 +23,7 @@ export const Hero = () => {
               textShadow: "0 2px 10px rgba(0,0,0,0.2)",
             }}
           >
-            Connect Instantly, Chat Securely
+            {title as unknown as string}
           </Typography>
           <Typography
             level="h4"
@@ -30,9 +34,7 @@ export const Hero = () => {
               opacity: 0.95,
             }}
           >
-            Experience seamless messaging with end-to-end encryption. Share
-            moments, stay connected, and communicate with everyone you care
-            about.
+            {subtitle as unknown as string}
           </Typography>
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
             <Button
@@ -49,7 +51,7 @@ export const Hero = () => {
                 fontSize: "1.1rem",
               }}
             >
-              Start Messaging
+              {startMessaging as unknown as string}
             </Button>
             <Button
               size="lg"
@@ -65,7 +67,7 @@ export const Hero = () => {
                 fontSize: "1.1rem",
               }}
             >
-              Learn More
+              {learnMore as unknown as string}
             </Button>
           </Stack>
         </Stack>

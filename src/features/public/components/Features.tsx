@@ -4,11 +4,12 @@ import {
   Send as SendIcon,
 } from "@mui/icons-material"
 import { Box, Card, Container, Grid, Stack, Typography } from "@mui/joy"
+import { useIntlayer } from "react-intlayer"
 
 type FeatureCardProps = {
   icon: React.ReactNode
-  title: string
-  description: string
+  title: unknown
+  description: unknown
 }
 
 const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
@@ -40,10 +41,10 @@ const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
           {icon}
         </Box>
         <Typography level="h3" fontSize="xl" fontWeight="lg">
-          {title}
+          {title as string}
         </Typography>
         <Typography level="body-md" color="neutral">
-          {description}
+          {description as string}
         </Typography>
       </Stack>
     </Card>
@@ -51,26 +52,28 @@ const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
 }
 
 export const Features = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const content = useIntlayer("features")
+
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
   const features = [
     {
       icon: <LockIcon sx={{ fontSize: 40 }} />,
-      title: "End-to-End Encryption",
-      description:
-        "Your messages are secured with end-to-end encryption. Only you and the person you're communicating with can read them.",
+      title: content.encryption.title,
+      description: content.encryption.description,
     },
     {
       icon: <GroupIcon sx={{ fontSize: 40 }} />,
-      title: "Group Chats",
-      description:
-        "Stay connected with family and friends. Create groups to chat with multiple people at once and share moments together.",
+      title: content.groupChats.title,
+      description: content.groupChats.description,
     },
     {
       icon: <SendIcon sx={{ fontSize: 40 }} />,
-      title: "Instant Messaging",
-      description:
-        "Send and receive messages instantly. Share photos, videos, documents, and voice messages with anyone, anywhere.",
+      title: content.instantMessaging.title,
+      description: content.instantMessaging.description,
     },
   ]
+  /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 
   return (
     <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: "background.surface" }}>
@@ -78,15 +81,16 @@ export const Features = () => {
         <Stack spacing={6}>
           <Stack spacing={2} alignItems="center" textAlign="center">
             <Typography level="h2" fontSize={{ xs: "2rem", md: "3rem" }}>
-              Why Choose Us
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
+              {content.sectionTitle as unknown as string}
             </Typography>
             <Typography
               level="body-lg"
               color="neutral"
               sx={{ maxWidth: "600px" }}
             >
-              Discover the features that make our messaging platform the best
-              choice for staying connected
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
+              {content.sectionDescription as unknown as string}
             </Typography>
           </Stack>
           <Grid container spacing={4}>

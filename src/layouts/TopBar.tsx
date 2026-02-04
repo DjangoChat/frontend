@@ -8,13 +8,18 @@ import {
   Stack,
   Typography,
 } from "@mui/joy"
-import { Link } from "react-router"
+import { getLocalizedUrl, type LocalesValues } from "intlayer"
+import { useIntlayer, useLocale } from "react-intlayer"
+import { Link, useLocation, useNavigate } from "react-router"
 import { ThemeToggleButton } from "../components"
 import { LANGUAGES, ROUTES_KEYS } from "../constants"
-import { useLanguage } from "../hooks"
 
 export const TopBar = () => {
-  const { language, setLanguage } = useLanguage()
+  const { setLocale, locale } = useLocale()
+  const navigate = useNavigate()
+  const location = useLocation()
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { appName, login, signUp, languageSelector } = useIntlayer("topbar")
 
   return (
     <Box
@@ -40,7 +45,7 @@ export const TopBar = () => {
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <Typography level="h4" fontWeight="bold" sx={{ color: "#25D366" }}>
-              ChatApp
+              {appName as unknown as string}
             </Typography>
           </Link>
 
@@ -54,7 +59,7 @@ export const TopBar = () => {
               color="neutral"
               sx={{ display: { xs: "none", sm: "flex" } }}
             >
-              Login
+              {login as unknown as string}
             </Button>
 
             {/* Sign Up Button */}
@@ -70,14 +75,20 @@ export const TopBar = () => {
                 display: { xs: "none", sm: "flex" },
               }}
             >
-              Sign Up
+              {signUp as unknown as string}
             </Button>
 
             {/* Language Selector */}
             <Select
-              value={language}
-              // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-              onChange={(_, value) => value && setLanguage(value)}
+              value={locale}
+              onChange={(_, value) => {
+                if (value) {
+                  const newLocale = value as LocalesValues
+                  const newUrl = getLocalizedUrl(location.pathname, newLocale)
+                  setLocale(newLocale)
+                  void navigate(newUrl)
+                }
+              }}
               size="sm"
               variant="outlined"
               startDecorator={<LanguageIcon />}
@@ -90,8 +101,14 @@ export const TopBar = () => {
                 },
               }}
             >
-              <Option value={LANGUAGES.EN}>English</Option>
-              <Option value={LANGUAGES.ES}>Español</Option>
+              <Option value={LANGUAGES.EN}>
+                {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
+                {languageSelector.english as unknown as string}
+              </Option>
+              <Option value={LANGUAGES.ES}>
+                {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
+                {languageSelector.spanish as unknown as string}
+              </Option>
             </Select>
 
             {/* Theme Toggle */}

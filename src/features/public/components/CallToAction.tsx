@@ -1,6 +1,10 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/joy"
+import { useIntlayer } from "react-intlayer"
 
 export const CallToAction = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { title, description, signUpNow } = useIntlayer("cta")
+
   return (
     <Box
       sx={{
@@ -18,7 +22,7 @@ export const CallToAction = () => {
               fontWeight: 700,
             }}
           >
-            Ready to Start Chatting?
+            {title as unknown as string}
           </Typography>
           <Typography
             level="body-lg"
@@ -28,8 +32,7 @@ export const CallToAction = () => {
               maxWidth: "600px",
             }}
           >
-            Join millions of users worldwide and experience secure, fast
-            messaging. Create your account now and start connecting!
+            {description as unknown as string}
           </Typography>
           <Button
             size="lg"
@@ -46,7 +49,7 @@ export const CallToAction = () => {
               fontWeight: 600,
             }}
           >
-            Sign Up Now
+            {signUpNow as unknown as string}
           </Button>
         </Stack>
       </Container>
