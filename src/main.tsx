@@ -1,7 +1,9 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
+import { Provider } from "react-redux"
 import { RouterProvider } from "react-router"
 import { ContextContainer, StyleContainer } from "./containers"
+import { store } from "./redux"
 import router from "./routers/index.router"
 
 const container = document.getElementById("root")
@@ -13,7 +15,9 @@ if (container) {
     <StrictMode>
       <ContextContainer>
         <StyleContainer>
-          <RouterProvider router={router} />
+          <Provider store={store}>
+            <RouterProvider router={router} />
+          </Provider>
         </StyleContainer>
       </ContextContainer>
     </StrictMode>,
