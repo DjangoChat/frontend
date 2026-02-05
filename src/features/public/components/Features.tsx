@@ -52,10 +52,8 @@ const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
 }
 
 export const Features = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const content = useIntlayer("features")
 
-  /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
   const features = [
     {
       icon: <LockIcon sx={{ fontSize: 40 }} />,
@@ -73,7 +71,6 @@ export const Features = () => {
       description: content.instantMessaging.description,
     },
   ]
-  /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 
   return (
     <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: "background.surface" }}>
@@ -81,7 +78,6 @@ export const Features = () => {
         <Stack spacing={6}>
           <Stack spacing={2} alignItems="center" textAlign="center">
             <Typography level="h2" fontSize={{ xs: "2rem", md: "3rem" }}>
-              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
               {content.sectionTitle as unknown as string}
             </Typography>
             <Typography
@@ -89,7 +85,6 @@ export const Features = () => {
               color="neutral"
               sx={{ maxWidth: "600px" }}
             >
-              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
               {content.sectionDescription as unknown as string}
             </Typography>
           </Stack>

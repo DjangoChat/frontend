@@ -9,9 +9,12 @@ export function ThemeToggleButton() {
     <IconButton
       variant="outlined"
       color="neutral"
+      size="sm"
       onClick={toggleTheme}
       sx={{
         borderRadius: "sm",
+        height: 36,
+        width: 36,
       }}
     >
       {theme === "light" ? <DarkMode /> : <LightMode />}

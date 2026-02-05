@@ -1,12 +1,9 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
 import type { Login, Register } from "../../types"
-import { customBaseQuery } from "./BaseQuery"
+import { api } from "./api"
 
-export const authApi = createApi({
-  reducerPath: "authApi",
-  baseQuery: customBaseQuery,
-  endpoints: builder => ({
-    login: builder.mutation<null, Login>({
+export const authApi = api.injectEndpoints({
+  endpoints: build => ({
+    login: build.mutation<null, Login>({
       query: data => ({
         url: "/login/",
         method: "POST",
@@ -14,21 +11,21 @@ export const authApi = createApi({
       }),
     }),
 
-    logout: builder.mutation<null, null>({
+    logout: build.mutation<null, null>({
       query: () => ({
         url: "/logout/",
         method: "POST",
       }),
     }),
 
-    refreshToken: builder.mutation<null, null>({
+    refreshToken: build.mutation<null, null>({
       query: () => ({
         url: "/refresh-token/",
         method: "POST",
       }),
     }),
 
-    register: builder.mutation<null, Register>({
+    register: build.mutation<null, Register>({
       query: data => ({
         url: "/register/",
         method: "POST",
@@ -36,6 +33,7 @@ export const authApi = createApi({
       }),
     }),
   }),
+  overrideExisting: false,
 })
 
 export const {

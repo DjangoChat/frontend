@@ -1,4 +1,5 @@
 export { default as ctaContent } from "./cta.content"
 export { default as featuresContent } from "./features.content"
 export { default as heroContent } from "./hero.content"
+export { default as signInContent } from "./signin.content"
 export { default as topbarContent } from "./topbar.content"

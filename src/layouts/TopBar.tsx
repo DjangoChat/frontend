@@ -18,7 +18,6 @@ export const TopBar = () => {
   const { setLocale, locale } = useLocale()
   const navigate = useNavigate()
   const location = useLocation()
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { appName, login, signUp, languageSelector } = useIntlayer("topbar")
 
   return (
@@ -50,14 +49,20 @@ export const TopBar = () => {
           </Link>
 
           {/* Navigation and Controls */}
-          <Stack direction="row" spacing={2} alignItems="center">
+          <Stack direction="row" spacing={1.5} alignItems="center">
             {/* Login Button */}
             <Button
               component={Link}
               to={ROUTES_KEYS.LOGIN}
-              variant="plain"
+              variant="outlined"
               color="neutral"
-              sx={{ display: { xs: "none", sm: "flex" } }}
+              size="sm"
+              sx={{
+                display: { xs: "none", sm: "flex" },
+                height: 36,
+                minWidth: 80,
+                borderRadius: "sm",
+              }}
             >
               {login as unknown as string}
             </Button>
@@ -65,14 +70,18 @@ export const TopBar = () => {
             {/* Sign Up Button */}
             <Button
               component={Link}
-              to={ROUTES_KEYS.SIGNUP}
+              to={ROUTES_KEYS.REGISTER}
               variant="solid"
+              size="sm"
               sx={{
                 bgcolor: "#25D366",
                 "&:hover": {
                   bgcolor: "#128C7E",
                 },
                 display: { xs: "none", sm: "flex" },
+                height: 36,
+                minWidth: 80,
+                borderRadius: "sm",
               }}
             >
               {signUp as unknown as string}
@@ -92,21 +101,23 @@ export const TopBar = () => {
               size="sm"
               variant="outlined"
               startDecorator={<LanguageIcon />}
-              sx={{ minWidth: 100 }}
+              sx={{
+                minWidth: 100,
+                height: 36,
+              }}
               slotProps={{
                 button: {
                   sx: {
                     borderRadius: "sm",
+                    height: 36,
                   },
                 },
               }}
             >
               <Option value={LANGUAGES.EN}>
-                {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
                 {languageSelector.english as unknown as string}
               </Option>
               <Option value={LANGUAGES.ES}>
-                {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
                 {languageSelector.spanish as unknown as string}
               </Option>
             </Select>

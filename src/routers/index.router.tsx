@@ -3,6 +3,8 @@ import { getHTMLTextDir, localeMap } from "intlayer"
 import { useEffect } from "react"
 import { IntlayerProvider } from "react-intlayer"
 import { createBrowserRouter, Outlet } from "react-router"
+import { ROUTES_KEYS } from "../constants"
+import { SignInPage } from "../features/auth"
 import { LandingPage } from "../features/public/screens"
 
 const useI18nHTMLAttributes = (locale: LocalesValues) => {
@@ -29,6 +31,10 @@ const router = createBrowserRouter([
       {
         element: <LandingPage />,
         index: true,
+      },
+      {
+        path: ROUTES_KEYS.LOGIN.slice(1),
+        element: <SignInPage />,
       },
     ],
   })),

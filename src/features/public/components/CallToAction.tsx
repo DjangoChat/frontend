@@ -2,7 +2,6 @@ import { Box, Button, Container, Stack, Typography } from "@mui/joy"
 import { useIntlayer } from "react-intlayer"
 
 export const CallToAction = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { title, description, signUpNow } = useIntlayer("cta")
 
   return (
