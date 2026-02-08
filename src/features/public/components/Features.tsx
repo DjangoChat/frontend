@@ -3,7 +3,7 @@ import {
   Lock as LockIcon,
   Send as SendIcon,
 } from "@mui/icons-material"
-import { Box, Card, Container, Grid, Stack, Typography } from "@mui/joy"
+import { Box, Container, Divider, Grid, Stack, Typography } from "@mui/joy"
 import { useIntlayer } from "react-intlayer"
 
 type FeatureCardProps = {
@@ -14,40 +14,24 @@ type FeatureCardProps = {
 
 const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
   return (
-    <Card
-      variant="outlined"
-      sx={{
-        p: 4,
-        height: "100%",
-        transition: "all 0.3s ease",
-        "&:hover": {
-          transform: "translateY(-8px)",
-          boxShadow: "lg",
-        },
-      }}
-    >
-      <Stack spacing={2} alignItems="center" textAlign="center">
-        <Box
-          sx={{
-            bgcolor: "primary.50",
-            borderRadius: "50%",
-            p: 2,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "primary.500",
-          }}
-        >
-          {icon}
-        </Box>
-        <Typography level="h3" fontSize="xl" fontWeight="lg">
-          {title as string}
-        </Typography>
-        <Typography level="body-md" color="neutral">
-          {description as string}
-        </Typography>
-      </Stack>
-    </Card>
+    <Stack sx={{ gap: 1.5, alignItems: "center", textAlign: "center" }}>
+      <Box
+        sx={{
+          color: "#25D366",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {icon}
+      </Box>
+      <Typography level="title-md" fontWeight="lg">
+        {title as string}
+      </Typography>
+      <Typography level="body-sm" color="neutral" sx={{ maxWidth: 280 }}>
+        {description as string}
+      </Typography>
+    </Stack>
   )
 }
 
@@ -56,45 +40,35 @@ export const Features = () => {
 
   const features = [
     {
-      icon: <LockIcon sx={{ fontSize: 40 }} />,
+      icon: <LockIcon sx={{ fontSize: 28 }} />,
       title: content.encryption.title,
       description: content.encryption.description,
     },
     {
-      icon: <GroupIcon sx={{ fontSize: 40 }} />,
+      icon: <GroupIcon sx={{ fontSize: 28 }} />,
       title: content.groupChats.title,
       description: content.groupChats.description,
     },
     {
-      icon: <SendIcon sx={{ fontSize: 40 }} />,
+      icon: <SendIcon sx={{ fontSize: 28 }} />,
       title: content.instantMessaging.title,
       description: content.instantMessaging.description,
     },
   ]
 
   return (
-    <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: "background.surface" }}>
-      <Container maxWidth="lg">
-        <Stack spacing={6}>
-          <Stack spacing={2} alignItems="center" textAlign="center">
-            <Typography level="h2" fontSize={{ xs: "2rem", md: "3rem" }}>
-              {content.sectionTitle as unknown as string}
-            </Typography>
-            <Typography
-              level="body-lg"
-              color="neutral"
-              sx={{ maxWidth: "600px" }}
-            >
-              {content.sectionDescription as unknown as string}
-            </Typography>
-          </Stack>
-          <Grid container spacing={4}>
+    <Box sx={{ py: { xs: 6, md: 8 } }}>
+      <Container maxWidth="md">
+        <Stack sx={{ gap: 5 }}>
+          <Divider />
+          <Grid container spacing={5}>
             {features.map((feature, index) => (
               <Grid key={index} xs={12} md={4}>
                 <FeatureCard {...feature} />
               </Grid>
             ))}
           </Grid>
+          <Divider />
         </Stack>
       </Container>
     </Box>

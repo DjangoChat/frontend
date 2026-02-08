@@ -1,5 +1,7 @@
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/joy"
+import { Box, Button, Container, Stack, Typography } from "@mui/joy"
 import { useIntlayer } from "react-intlayer"
+import { Link } from "react-router"
+import { ROUTES_KEYS } from "../../../constants"
 
 export const Hero = () => {
   const { title, subtitle, startMessaging, learnMore } = useIntlayer("hero")
@@ -7,98 +9,74 @@ export const Hero = () => {
   return (
     <Box
       sx={{
-        background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
-        py: { xs: 8, md: 12 },
-        color: "white",
+        py: { xs: 10, md: 14 },
       }}
     >
-      <Container maxWidth="lg">
-        <Grid container spacing={4} alignItems="center">
-          <Grid xs={12} md={6}>
-            <Stack spacing={4} textAlign={{ xs: "center", md: "left" }}>
-              <Typography
-                level="h1"
-                sx={{
-                  fontSize: { xs: "2.5rem", md: "3.5rem" },
-                  fontWeight: 800,
-                  textShadow: "0 2px 10px rgba(0,0,0,0.2)",
-                }}
-              >
-                {title as unknown as string}
-              </Typography>
-              <Typography
-                level="h4"
-                sx={{
-                  maxWidth: "500px",
-                  fontSize: { xs: "1.1rem", md: "1.3rem" },
-                  fontWeight: 400,
-                  opacity: 0.95,
-                }}
-              >
-                {subtitle as unknown as string}
-              </Typography>
-              <Stack
-                direction={{ xs: "column", sm: "row" }}
-                spacing={2}
-                justifyContent={{ xs: "center", md: "flex-start" }}
-              >
-                <Button
-                  size="lg"
-                  variant="solid"
-                  sx={{
-                    bgcolor: "white",
-                    color: "#25D366",
-                    "&:hover": {
-                      bgcolor: "rgba(255,255,255,0.9)",
-                    },
-                    px: 4,
-                    py: 1.5,
-                    fontSize: "1.1rem",
-                  }}
-                >
-                  {startMessaging as unknown as string}
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outlined"
-                  sx={{
-                    borderColor: "white",
-                    color: "white",
-                    "&:hover": {
-                      bgcolor: "rgba(255,255,255,0.1)",
-                    },
-                    px: 4,
-                    py: 1.5,
-                    fontSize: "1.1rem",
-                  }}
-                >
-                  {learnMore as unknown as string}
-                </Button>
-              </Stack>
-            </Stack>
-          </Grid>
-          <Grid xs={12} md={6}>
-            <Box
+      <Container maxWidth="sm">
+        <Stack
+          sx={{
+            gap: 3,
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <Typography
+            component="h1"
+            level="h1"
+            sx={{
+              fontSize: { xs: "2rem", md: "2.5rem" },
+              fontWeight: 700,
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {title as unknown as string}
+          </Typography>
+          <Typography
+            level="body-md"
+            sx={{
+              maxWidth: 420,
+              color: "text.secondary",
+              lineHeight: 1.7,
+            }}
+          >
+            {subtitle as unknown as string}
+          </Typography>
+          <Stack
+            direction="row"
+            sx={{
+              gap: 1.5,
+              mt: 1,
+            }}
+          >
+            <Button
+              component={Link}
+              to={ROUTES_KEYS.REGISTER}
+              size="md"
               sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                bgcolor: "#25D366",
+                "&:hover": { bgcolor: "#128C7E" },
+                px: 3,
+                fontWeight: 600,
+                borderRadius: "sm",
               }}
             >
-              <Box
-                component="img"
-                src="https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&h=500&fit=crop"
-                alt="Messaging illustration"
-                sx={{
-                  maxWidth: "100%",
-                  height: "auto",
-                  borderRadius: "lg",
-                  boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
-                }}
-              />
-            </Box>
-          </Grid>
-        </Grid>
+              {startMessaging as unknown as string}
+            </Button>
+            <Button
+              size="md"
+              variant="outlined"
+              color="neutral"
+              sx={{
+                px: 3,
+                fontWeight: 600,
+                borderRadius: "sm",
+              }}
+            >
+              {learnMore as unknown as string}
+            </Button>
+          </Stack>
+        </Stack>
       </Container>
     </Box>
   )

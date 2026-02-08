@@ -1,51 +1,54 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/joy"
 import { useIntlayer } from "react-intlayer"
+import { Link } from "react-router"
+import { ROUTES_KEYS } from "../../../constants"
 
 export const CallToAction = () => {
   const { title, description, signUpNow } = useIntlayer("cta")
 
   return (
     <Box
-      sx={{
-        py: { xs: 8, md: 12 },
-        background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
-        color: "white",
-      }}
+      sx={theme => ({
+        py: { xs: 8, md: 10 },
+        bgcolor: "background.level1",
+        [theme.getColorSchemeSelector("dark")]: {
+          bgcolor: "background.surface",
+        },
+      })}
     >
-      <Container maxWidth="md">
-        <Stack spacing={4} alignItems="center" textAlign="center">
+      <Container maxWidth="sm">
+        <Stack sx={{ gap: 2, alignItems: "center", textAlign: "center" }}>
           <Typography
-            level="h2"
+            component="h2"
+            level="h3"
             sx={{
-              fontSize: { xs: "2rem", md: "3rem" },
               fontWeight: 700,
+              lineHeight: 1.2,
             }}
           >
             {title as unknown as string}
           </Typography>
           <Typography
-            level="body-lg"
+            level="body-sm"
             sx={{
-              fontSize: { xs: "1rem", md: "1.25rem" },
-              opacity: 0.95,
-              maxWidth: "600px",
+              color: "text.secondary",
+              maxWidth: 400,
+              lineHeight: 1.7,
             }}
           >
             {description as unknown as string}
           </Typography>
           <Button
-            size="lg"
-            variant="solid"
+            component={Link}
+            to={ROUTES_KEYS.REGISTER}
+            size="md"
             sx={{
-              bgcolor: "white",
-              color: "#25D366",
-              "&:hover": {
-                bgcolor: "rgba(255,255,255,0.9)",
-              },
-              px: 5,
-              py: 1.5,
-              fontSize: "1.1rem",
+              bgcolor: "#25D366",
+              "&:hover": { bgcolor: "#128C7E" },
+              px: 4,
               fontWeight: 600,
+              borderRadius: "sm",
+              mt: 1,
             }}
           >
             {signUpNow as unknown as string}
