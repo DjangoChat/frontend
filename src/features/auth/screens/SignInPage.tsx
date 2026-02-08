@@ -4,6 +4,7 @@ import {
   Checkbox,
   Divider,
   FormControl,
+  FormHelperText,
   FormLabel,
   Input,
   Link as JoyLink,
@@ -11,25 +12,39 @@ import {
   Typography,
 } from "@mui/joy"
 import { useIntlayer } from "react-intlayer"
-import { Link } from "react-router"
-import { GoogleIcon } from "../../../components/icons"
+import { Link, useNavigate } from "react-router"
 import { ROUTES_KEYS } from "../../../constants"
+import {
+  clear,
+  setEmail,
+  setPassword,
+  useAppDispatch,
+  useAppSelector,
+  useLoginMutation,
+  validate,
+} from "../../../redux"
 import { AuthFooter, AuthHeader, AuthLayout } from "../components"
+import { GoogleIcon } from "../../../components"
 
 export function SignInPage() {
   const content = useIntlayer("signin")
   const { appName } = useIntlayer("topbar")
 
+  const dispatch = useAppDispatch()
+  const { email, password, errors } = useAppSelector(state => state.signin)
+  const [login, { isLoading }] = useLoginMutation()
+  const navigate = useNavigate()
+
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const data = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      persistent: formData.get("persistent") === "on",
-    }
-    // TODO: Implement auth logic
-    console.log("Sign in data:", data)
+    dispatch(validate())
+
+    const hasErrors = Object.values(errors).some(Boolean)
+    if (hasErrors || !email.trim() || !password.trim()) return
+
+    void login({ email: email.trim(), password })
+      .then(() => (dispatch(clear()), navigate(ROUTES_KEYS.DASHBOARD)))
+      .catch(() => dispatch(clear()))
   }
 
   return (
@@ -109,13 +124,29 @@ export function SignInPage() {
 
           <Stack sx={{ gap: 4, mt: 2 }}>
             <form onSubmit={handleSubmit}>
-              <FormControl required>
+              <FormControl required error={!!errors.email}>
                 <FormLabel>{content.emailLabel as string}</FormLabel>
-                <Input type="email" name="email" />
+                <Input
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={e => dispatch(setEmail(e.target.value))}
+                />
+                {errors.email && (
+                  <FormHelperText>{errors.email}</FormHelperText>
+                )}
               </FormControl>
-              <FormControl required>
+              <FormControl required error={!!errors.password}>
                 <FormLabel>{content.passwordLabel as string}</FormLabel>
-                <Input type="password" name="password" />
+                <Input
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={e => dispatch(setPassword(e.target.value))}
+                />
+                {errors.password && (
+                  <FormHelperText>{errors.password}</FormHelperText>
+                )}
               </FormControl>
               <Stack sx={{ gap: 4, mt: 2 }}>
                 <Box
@@ -137,6 +168,7 @@ export function SignInPage() {
                 <Button
                   type="submit"
                   fullWidth
+                  loading={isLoading}
                   sx={{
                     bgcolor: "#25D366",
                     "&:hover": {

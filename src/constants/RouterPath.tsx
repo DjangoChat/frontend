@@ -3,6 +3,7 @@ export const ROUTES_KEYS = {
   LOGIN: "/login",
   REGISTER: "/register",
   SIGNUP: "/register",
+  DASHBOARD: "/dashboard",
 } as const
 
 export type RouteKey = (typeof ROUTES_KEYS)[keyof typeof ROUTES_KEYS]
