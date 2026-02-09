@@ -1,14 +1,20 @@
-import { Language as LanguageIcon } from "@mui/icons-material"
+import { Language as LanguageIcon, Menu as MenuIcon } from "@mui/icons-material"
 import {
   Box,
   Button,
   Container,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
   Option,
   Select,
   Stack,
   Typography,
 } from "@mui/joy"
 import { getLocalizedUrl, type LocalesValues } from "intlayer"
+import { useState } from "react"
 import { useIntlayer, useLocale } from "react-intlayer"
 import { Link, useLocation, useNavigate } from "react-router"
 import { ThemeToggleButton } from "../components"
@@ -19,6 +25,7 @@ export const TopBar = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { appName, login, signUp, languageSelector } = useIntlayer("topbar")
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <Box
@@ -50,7 +57,7 @@ export const TopBar = () => {
 
           {/* Navigation and Controls */}
           <Stack direction="row" spacing={1.5} alignItems="center">
-            {/* Login Button */}
+            {/* Login Button - hidden on mobile */}
             <Button
               component={Link}
               to={ROUTES_KEYS.LOGIN}
@@ -67,7 +74,7 @@ export const TopBar = () => {
               {login as unknown as string}
             </Button>
 
-            {/* Sign Up Button */}
+            {/* Sign Up Button - hidden on mobile */}
             <Button
               component={Link}
               to={ROUTES_KEYS.REGISTER}
@@ -100,20 +107,31 @@ export const TopBar = () => {
               }}
               size="sm"
               variant="outlined"
-              startDecorator={<LanguageIcon />}
+              startDecorator={<LanguageIcon sx={{ fontSize: "1.25rem" }} />}
               sx={{
-                minWidth: 100,
+                minWidth: { xs: 60, sm: 100 },
                 height: 36,
+                "& .MuiSelect-button": {
+                  display: "flex",
+                  alignItems: "center",
+                  py: 0,
+                },
+                "& .MuiSelect-startDecorator": {
+                  mt: 0,
+                  mb: 0,
+                  display: "flex",
+                  alignItems: "center",
+                },
               }}
               slotProps={{
                 button: {
                   sx: {
                     borderRadius: "sm",
-                    height: 36,
+                    height: "100%",
+                    py: 0,
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    lineHeight: 1,
+                    gap: 0.5,
                   },
                 },
               }}
@@ -128,7 +146,66 @@ export const TopBar = () => {
 
             {/* Theme Toggle */}
             <ThemeToggleButton />
+
+            {/* Mobile Menu Button */}
+            <IconButton
+              variant="outlined"
+              color="neutral"
+              size="sm"
+              onClick={() => {
+                setMobileMenuOpen(true)
+              }}
+              sx={{
+                display: { xs: "flex", sm: "none" },
+                height: 36,
+                width: 36,
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
           </Stack>
+
+          {/* Mobile Drawer */}
+          <Drawer
+            open={mobileMenuOpen}
+            onClose={() => {
+              setMobileMenuOpen(false)
+            }}
+            anchor="right"
+            size="sm"
+            sx={{ display: { xs: "block", sm: "none" } }}
+          >
+            <Box sx={{ p: 2 }}>
+              <Typography level="title-lg" sx={{ mb: 2, color: "#25D366" }}>
+                {appName as unknown as string}
+              </Typography>
+              <List>
+                <ListItem>
+                  <ListItemButton
+                    component={Link}
+                    to={ROUTES_KEYS.LOGIN}
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                    }}
+                  >
+                    {login as unknown as string}
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton
+                    component={Link}
+                    to={ROUTES_KEYS.REGISTER}
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                    }}
+                    sx={{ color: "#25D366", fontWeight: 600 }}
+                  >
+                    {signUp as unknown as string}
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Box>
+          </Drawer>
         </Stack>
       </Container>
     </Box>

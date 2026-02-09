@@ -54,16 +54,31 @@ export function AuthHeader({ appName }: AuthHeaderProps) {
           }}
           size="sm"
           variant="outlined"
-          startDecorator={<LanguageIcon />}
+          startDecorator={<LanguageIcon sx={{ fontSize: "1.25rem" }} />}
           sx={{
             minWidth: 80,
             height: 36,
+            "& .MuiSelect-button": {
+              display: "flex",
+              alignItems: "center",
+              py: 0,
+            },
+            "& .MuiSelect-startDecorator": {
+              mt: 0,
+              mb: 0,
+              display: "flex",
+              alignItems: "center",
+            },
           }}
           slotProps={{
             button: {
               sx: {
                 borderRadius: "sm",
-                height: 36,
+                height: "100%",
+                py: 0,
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
               },
             },
           }}

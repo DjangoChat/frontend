@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Checkbox,
   Divider,
   FormControl,
   FormHelperText,
@@ -16,35 +15,55 @@ import { Link, useNavigate } from "react-router"
 import { GoogleIcon } from "../../../components"
 import { ROUTES_KEYS } from "../../../constants"
 import {
-  clear,
-  setEmail,
-  setPassword,
+  clearRegister,
+  setPassword1,
+  setPassword2,
+  setPhone,
+  setRegisterEmail,
   useAppDispatch,
   useAppSelector,
-  useLoginMutation,
-  validate,
+  useRegisterMutation,
+  validateRegister,
 } from "../../../redux"
 import { AuthFooter, AuthHeader, AuthLayout } from "../components"
 
-export function SignInPage() {
-  const content = useIntlayer("signin")
+export function RegisterPage() {
+  const content = useIntlayer("register")
   const { appName } = useIntlayer("topbar")
 
   const dispatch = useAppDispatch()
-  const { email, password, errors } = useAppSelector(state => state.signin)
-  const [login, { isLoading }] = useLoginMutation()
+  const { email, phone, password1, password2, errors } = useAppSelector(
+    state => state.register,
+  )
+  const [register, { isLoading }] = useRegisterMutation()
   const navigate = useNavigate()
 
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
-    dispatch(validate())
+    dispatch(validateRegister())
 
     const hasErrors = Object.values(errors).some(Boolean)
-    if (hasErrors || !email.trim() || !password.trim()) return
+    if (
+      hasErrors ||
+      !email.trim() ||
+      !phone.trim() ||
+      !password1.trim() ||
+      !password2.trim()
+    )
+      return
 
-    void login({ email: email.trim(), password })
-      .then(() => (dispatch(clear()), navigate(ROUTES_KEYS.DASHBOARD)))
-      .catch(() => dispatch(clear()))
+    register({
+      email: email.trim(),
+      phone: phone.trim(),
+      password1,
+      password2,
+    })
+      .unwrap()
+      .then(() => {
+        dispatch(clearRegister())
+        void navigate(ROUTES_KEYS.REGISTER_SUCCESS)
+      })
+      .catch(() => undefined)
   }
 
   return (
@@ -92,13 +111,13 @@ export function SignInPage() {
                 {content.title as string}
               </Typography>
               <Typography level="body-sm">
-                {content.newToApp as string}{" "}
+                {content.alreadyHaveAccount as string}{" "}
                 <JoyLink
                   component={Link}
-                  to={ROUTES_KEYS.REGISTER}
+                  to={ROUTES_KEYS.LOGIN}
                   level="title-sm"
                 >
-                  {content.signUpLink as string}
+                  {content.signInLink as string}
                 </JoyLink>
               </Typography>
             </Stack>
@@ -130,41 +149,49 @@ export function SignInPage() {
                   type="email"
                   name="email"
                   value={email}
-                  onChange={e => dispatch(setEmail(e.target.value))}
+                  onChange={e => dispatch(setRegisterEmail(e.target.value))}
                 />
                 {errors.email && (
                   <FormHelperText>{errors.email}</FormHelperText>
                 )}
               </FormControl>
-              <FormControl required error={!!errors.password}>
+              <FormControl required error={!!errors.phone}>
+                <FormLabel>{content.phoneLabel as string}</FormLabel>
+                <Input
+                  type="tel"
+                  name="phone"
+                  value={phone}
+                  onChange={e => dispatch(setPhone(e.target.value))}
+                />
+                {errors.phone && (
+                  <FormHelperText>{errors.phone}</FormHelperText>
+                )}
+              </FormControl>
+              <FormControl required error={!!errors.password1}>
                 <FormLabel>{content.passwordLabel as string}</FormLabel>
                 <Input
                   type="password"
-                  name="password"
-                  value={password}
-                  onChange={e => dispatch(setPassword(e.target.value))}
+                  name="password1"
+                  value={password1}
+                  onChange={e => dispatch(setPassword1(e.target.value))}
                 />
-                {errors.password && (
-                  <FormHelperText>{errors.password}</FormHelperText>
+                {errors.password1 && (
+                  <FormHelperText>{errors.password1}</FormHelperText>
+                )}
+              </FormControl>
+              <FormControl required error={!!errors.password2}>
+                <FormLabel>{content.confirmPasswordLabel as string}</FormLabel>
+                <Input
+                  type="password"
+                  name="password2"
+                  value={password2}
+                  onChange={e => dispatch(setPassword2(e.target.value))}
+                />
+                {errors.password2 && (
+                  <FormHelperText>{errors.password2}</FormHelperText>
                 )}
               </FormControl>
               <Stack sx={{ gap: 4, mt: 2 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Checkbox
-                    size="sm"
-                    label={content.rememberMe as string}
-                    name="persistent"
-                  />
-                  <JoyLink level="title-sm" href="#">
-                    {content.forgotPassword as string}
-                  </JoyLink>
-                </Box>
                 <Button
                   type="submit"
                   fullWidth
@@ -176,7 +203,7 @@ export function SignInPage() {
                     },
                   }}
                 >
-                  {content.signInButton as string}
+                  {content.signUpButton as string}
                 </Button>
               </Stack>
             </form>

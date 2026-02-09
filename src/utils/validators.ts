@@ -15,3 +15,6 @@ export function isMinLength(value: string, min: number): boolean {
 export function isMaxLength(value: string, max: number): boolean {
   return value.trim().length <= max
 }
+export function isOnlyNumbers(value: string): boolean {
+  return /^\d+$/.test(value.trim())
+}

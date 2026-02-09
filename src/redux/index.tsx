@@ -1,12 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch, useSelector } from "react-redux"
 import { api } from "./services"
-import { signinReducer } from "./slices"
+import { registerReducer, signinReducer } from "./slices"
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     signin: signinReducer,
+    register: registerReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(api.middleware),

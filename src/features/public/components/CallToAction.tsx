@@ -24,6 +24,7 @@ export const CallToAction = () => {
             sx={{
               fontWeight: 700,
               lineHeight: 1.2,
+              fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.75rem" },
             }}
           >
             {title as unknown as string}
@@ -32,7 +33,7 @@ export const CallToAction = () => {
             level="body-sm"
             sx={{
               color: "text.secondary",
-              maxWidth: 400,
+              maxWidth: { xs: "100%", sm: 400 },
               lineHeight: 1.7,
             }}
           >

@@ -1,3 +1,4 @@
+import { ENDPOINT } from "../../constants"
 import type { Login, Register } from "../../types"
 import { api } from "./api"
 
@@ -5,7 +6,7 @@ export const authApi = api.injectEndpoints({
   endpoints: build => ({
     login: build.mutation<null, Login>({
       query: data => ({
-        url: "/login/",
+        url: ENDPOINT.LOGIN,
         method: "POST",
         body: data,
       }),
@@ -13,21 +14,21 @@ export const authApi = api.injectEndpoints({
 
     logout: build.mutation<null, null>({
       query: () => ({
-        url: "/logout/",
+        url: ENDPOINT.LOGOUT,
         method: "POST",
       }),
     }),
 
     refreshToken: build.mutation<null, null>({
       query: () => ({
-        url: "/refresh-token/",
+        url: ENDPOINT.REFRESH,
         method: "POST",
       }),
     }),
 
     register: build.mutation<null, Register>({
       query: data => ({
-        url: "/register/",
+        url: ENDPOINT.REGISTER,
         method: "POST",
         body: data,
       }),

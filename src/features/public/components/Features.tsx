@@ -28,7 +28,11 @@ const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
       <Typography level="title-md" fontWeight="lg">
         {title as string}
       </Typography>
-      <Typography level="body-sm" color="neutral" sx={{ maxWidth: 280 }}>
+      <Typography
+        level="body-sm"
+        color="neutral"
+        sx={{ maxWidth: { xs: "100%", sm: 280 } }}
+      >
         {description as string}
       </Typography>
     </Stack>
@@ -61,9 +65,9 @@ export const Features = () => {
       <Container maxWidth="md">
         <Stack sx={{ gap: 5 }}>
           <Divider />
-          <Grid container spacing={5}>
+          <Grid container spacing={{ xs: 3, sm: 4, md: 5 }}>
             {features.map((feature, index) => (
-              <Grid key={index} xs={12} md={4}>
+              <Grid key={index} xs={12} sm={6} md={4}>
                 <FeatureCard {...feature} />
               </Grid>
             ))}

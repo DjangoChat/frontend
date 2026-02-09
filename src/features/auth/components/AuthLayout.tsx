@@ -47,6 +47,7 @@ export function AuthLayout({
           top: 0,
           bottom: 0,
           left: { xs: 0, md: "50vw" },
+          display: { xs: "none", md: "block" },
           transition: "background-image 0.4s, left 0.4s !important",
           transitionDelay: "0.5s",
           backgroundColor: "background.level1",

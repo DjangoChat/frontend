@@ -2,7 +2,7 @@ export const ROUTES_KEYS = {
   ROOT: "/",
   LOGIN: "/login",
   REGISTER: "/register",
-  SIGNUP: "/register",
+  REGISTER_SUCCESS: "/register/success",
   DASHBOARD: "/dashboard",
 } as const
 

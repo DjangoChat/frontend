@@ -35,7 +35,7 @@ export const Hero = () => {
           <Typography
             level="body-md"
             sx={{
-              maxWidth: 420,
+              maxWidth: { xs: "100%", sm: 420 },
               color: "text.secondary",
               lineHeight: 1.7,
             }}
@@ -43,10 +43,11 @@ export const Hero = () => {
             {subtitle as unknown as string}
           </Typography>
           <Stack
-            direction="row"
+            direction={{ xs: "column", sm: "row" }}
             sx={{
               gap: 1.5,
               mt: 1,
+              width: { xs: "100%", sm: "auto" },
             }}
           >
             <Button
