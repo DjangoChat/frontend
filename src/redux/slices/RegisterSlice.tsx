@@ -1,6 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import type { Register } from "../../types"
 import {
+  hasLowercase,
+  hasNumber,
+  hasSpecialCharacter,
+  hasUppercase,
+  isMaxLength,
   isMinLength,
   isNotBlank,
   isOnlyNumbers,
@@ -66,12 +71,27 @@ const registerSlice = createSlice({
         errors.phone = "Phone number is required"
       } else if (!isOnlyNumbers(state.phone)) {
         errors.phone = "Phone number must contain only digits"
+      } else if (!isMinLength(state.phone, 9)) {
+        errors.phone = "Phone must be at least 9 characters"
+      } else if (!isMaxLength(state.phone, 9)) {
+        errors.phone = "Phone must be at most 9 characters"
       }
 
       if (!isNotBlank(state.password1)) {
         errors.password1 = "Password is required"
-      } else if (!isMinLength(state.password1, 8)) {
-        errors.password1 = "Password must be at least 8 characters"
+      } else if (!isMinLength(state.password1, 10)) {
+        errors.password1 = "Password must be at least 10 characters"
+      } else if (!isMaxLength(state.password1, 25)) {
+        errors.password1 = "Password must be at most 25 characters"
+      } else if (!hasUppercase(state.password1)) {
+        errors.password1 = "Password must contain at least one uppercase letter"
+      } else if (!hasLowercase(state.password1)) {
+        errors.password1 = "Password must contain at least one lowercase letter"
+      } else if (!hasNumber(state.password1)) {
+        errors.password1 = "Password must contain at least one number"
+      } else if (!hasSpecialCharacter(state.password1)) {
+        errors.password1 =
+          "Password must contain at least one special character"
       }
 
       if (!isNotBlank(state.password2)) {
