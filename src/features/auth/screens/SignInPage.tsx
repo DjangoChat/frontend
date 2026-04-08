@@ -13,6 +13,8 @@ import {
 } from "@mui/joy"
 import { useIntlayer } from "react-intlayer"
 import { Link, useNavigate } from "react-router"
+import blackAuthImage from "../../../assets/images/black-auth.jpg"
+import whiteAuthImage from "../../../assets/images/white-auth.jpg"
 import { GoogleIcon } from "../../../components"
 import { ROUTES_KEYS } from "../../../constants"
 import {
@@ -49,8 +51,8 @@ export function SignInPage() {
 
   return (
     <AuthLayout
-      backgroundImage="https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2"
-      darkBackgroundImage="https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2"
+      backgroundImage={whiteAuthImage}
+      darkBackgroundImage={blackAuthImage}
     >
       <Box
         sx={{
