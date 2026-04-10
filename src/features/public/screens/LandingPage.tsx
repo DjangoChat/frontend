@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/joy"
 import { useIntlayer } from "react-intlayer"
 import { TopBar } from "../../../layouts"
-import { CallToAction, Features, Hero } from "../components"
+import { CallToAction, Features, Hero, Pricing } from "../components"
 
 export const LandingPage = () => {
   const { copyright } = useIntlayer("signin")
@@ -19,6 +19,7 @@ export const LandingPage = () => {
       <Box component="main" sx={{ flex: 1 }}>
         <Hero />
         <Features />
+        <Pricing />
         <CallToAction />
       </Box>
       <Box component="footer" sx={{ py: 3 }}>

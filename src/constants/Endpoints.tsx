@@ -8,6 +8,7 @@ export const ENDPOINT = {
   REFRESH: "/refresh-token/",
   ME: "/me/",
   PROFILE: "/profile/",
+  PRICE: "/prices/",
 } as const
 
 export type Endpoint = (typeof ENDPOINT)[keyof typeof ENDPOINT]
