@@ -4,8 +4,17 @@ import { useEffect } from "react"
 import { IntlayerProvider } from "react-intlayer"
 import { createBrowserRouter, Outlet } from "react-router"
 import { ROUTES_KEYS } from "../constants"
+import { AuthProvider } from "../contexts"
 import { RegisterPage, RegisterSuccessPage, SignInPage } from "../features/auth"
-import { LandingPage, NotFoundPage } from "../features/public/screens"
+import { ProfilePage, SubscriptionPage } from "../features/onboarding"
+import { LandingPage, NotFoundPage } from "../features/public"
+import { OnboardingLayout } from "../layouts"
+import {
+  DashboardGuardian,
+  OnboardingProfileGuardian,
+  OnboardingSubscriptionGuardian,
+  OnboardinGuardian,
+} from "./Guardians"
 
 const useI18nHTMLAttributes = (locale: LocalesValues) => {
   useEffect(() => {
@@ -43,6 +52,45 @@ const router = createBrowserRouter([
       {
         path: ROUTES_KEYS.REGISTER_SUCCESS.slice(1),
         element: <RegisterSuccessPage />,
+      },
+      {
+        path: ROUTES_KEYS.ONBOARDING.slice(1),
+        element: (
+          <AuthProvider>
+            <OnboardinGuardian />
+          </AuthProvider>
+        ),
+        children: [
+          {
+            index: true,
+            element: <OnboardingLayout />,
+          },
+          {
+            path: ROUTES_KEYS.ONBOARDING_PROFILE.slice(1),
+            element: (
+              <OnboardingProfileGuardian>
+                <ProfilePage />
+              </OnboardingProfileGuardian>
+            ),
+          },
+          {
+            path: ROUTES_KEYS.ONBOARDING_SUBSCRIPTION.slice(1),
+            element: (
+              <OnboardingSubscriptionGuardian>
+                <SubscriptionPage />
+              </OnboardingSubscriptionGuardian>
+            ),
+          },
+        ],
+      },
+      {
+        path: ROUTES_KEYS.DASHBOARD.slice(1),
+        element: (
+          <AuthProvider>
+            <DashboardGuardian />
+          </AuthProvider>
+        ),
+        children: [],
       },
       {
         path: "*",

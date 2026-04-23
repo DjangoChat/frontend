@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
-import type { Login } from "../../types"
+import type { LoginRequest } from "../../types"
 import { isMinLength, isNotBlank, isValidEmail } from "../../utils"
 
 type SignInErrors = {
@@ -7,7 +7,7 @@ type SignInErrors = {
   password?: string
 }
 
-type SignInState = Login & {
+type SignInState = LoginRequest & {
   errors: SignInErrors
 }
 
