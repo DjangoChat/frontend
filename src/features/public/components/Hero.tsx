@@ -40,16 +40,17 @@ export const Hero = () => {
 
       {/* Content */}
       <Container
-        maxWidth="sm"
+        maxWidth="md"
         sx={{
           position: "relative",
           zIndex: 2,
-          py: { xs: 10, md: 14 },
+          py: { xs: 8, sm: 12, md: 16, lg: 20 },
+          px: { xs: 2, sm: 3 },
         }}
       >
         <Stack
           sx={{
-            gap: 3,
+            gap: { xs: 2.5, sm: 3.5, md: 4 },
             alignItems: "center",
             textAlign: "center",
           }}
@@ -58,7 +59,12 @@ export const Hero = () => {
             component="h1"
             level="h1"
             sx={theme => ({
-              fontSize: { xs: "2rem", md: "2.5rem" },
+              fontSize: {
+                xs: "2.25rem",
+                sm: "3rem",
+                md: "3.75rem",
+                lg: "4.5rem",
+              },
               fontWeight: 700,
               lineHeight: 1.15,
               letterSpacing: "-0.02em",
@@ -75,7 +81,8 @@ export const Hero = () => {
           <Typography
             level="body-md"
             sx={theme => ({
-              maxWidth: { xs: "100%", sm: 420 },
+              maxWidth: { xs: "100%", sm: 480, md: 560 },
+              fontSize: { xs: "1rem", sm: "1.125rem", md: "1.25rem" },
               lineHeight: 1.7,
               [theme.getColorSchemeSelector("light")]: {
                 color: "rgba(0, 0, 0, 0.7)",
@@ -90,8 +97,8 @@ export const Hero = () => {
           <Stack
             direction={{ xs: "column", sm: "row" }}
             sx={{
-              gap: 1.5,
-              mt: 1,
+              gap: { xs: 1.5, sm: 2 },
+              mt: { xs: 1, sm: 2 },
               width: { xs: "100%", sm: "auto" },
             }}
           >

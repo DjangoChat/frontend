@@ -9,16 +9,18 @@ type ContextProviderProps = {
 export const AuthContext = createContext<{
   user: LoginResponse | null
   isAuth: boolean
+  isLoading: boolean
 }>({
   user: null,
   isAuth: false,
+  isLoading: false,
 })
 
 export const AuthProvider = ({ children }: ContextProviderProps) => {
   const [user, setUser] = useState<LoginResponse | null>(null)
   const [isAuth, setIsAuth] = useState<boolean>(false)
 
-  const { data, isError } = useMeQuery(null)
+  const { data, isError, isLoading } = useMeQuery(null)
 
   useEffect(() => {
     if (data) {
@@ -35,6 +37,7 @@ export const AuthProvider = ({ children }: ContextProviderProps) => {
       value={{
         user,
         isAuth,
+        isLoading: isLoading,
       }}
     >
       {children}

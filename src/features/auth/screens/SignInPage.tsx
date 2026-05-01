@@ -45,6 +45,7 @@ export function SignInPage() {
     if (hasErrors || !email.trim() || !password.trim()) return
 
     void login({ email: email.trim(), password })
+      .unwrap()
       .then(() => (dispatch(clear()), navigate(ROUTES_KEYS.DASHBOARD)))
       .catch(() => dispatch(clear()))
   }

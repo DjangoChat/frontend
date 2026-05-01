@@ -8,7 +8,7 @@ import {
   StyleContainer,
 } from "./containers"
 import { store } from "./redux"
-import router from "./routers/index.router"
+import router from "./routers"
 
 const container = document.getElementById("root")
 

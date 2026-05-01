@@ -2,7 +2,12 @@ import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch, useSelector } from "react-redux"
 import { errorMiddleware } from "./middleware"
 import { api } from "./services"
-import { notificationReducer, registerReducer, signinReducer } from "./slices"
+import {
+  notificationReducer,
+  profileReducer,
+  registerReducer,
+  signinReducer,
+} from "./slices"
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +15,7 @@ export const store = configureStore({
     notification: notificationReducer,
     signin: signinReducer,
     register: registerReducer,
+    profile: profileReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(api.middleware, errorMiddleware),

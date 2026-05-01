@@ -1,2 +1,3 @@
+export * from "./DashboardLayout"
 export * from "./OnboardingLayout"
-export { TopBar } from "./TopBar"
+export * from "./TopBar"

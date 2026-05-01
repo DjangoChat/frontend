@@ -9,6 +9,7 @@ import { RegisterPage, RegisterSuccessPage, SignInPage } from "../features/auth"
 import { ProfilePage, SubscriptionPage } from "../features/onboarding"
 import { LandingPage, NotFoundPage } from "../features/public"
 import { OnboardingLayout } from "../layouts"
+import DashboardLayout from "../layouts/DashboardLayout"
 import {
   DashboardGuardian,
   OnboardingProfileGuardian,
@@ -57,16 +58,16 @@ const router = createBrowserRouter([
         path: ROUTES_KEYS.ONBOARDING.slice(1),
         element: (
           <AuthProvider>
-            <OnboardinGuardian />
+            <OnboardingLayout />
           </AuthProvider>
         ),
         children: [
           {
             index: true,
-            element: <OnboardingLayout />,
+            element: <OnboardinGuardian />,
           },
           {
-            path: ROUTES_KEYS.ONBOARDING_PROFILE.slice(1),
+            path: "profile/",
             element: (
               <OnboardingProfileGuardian>
                 <ProfilePage />
@@ -74,7 +75,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: ROUTES_KEYS.ONBOARDING_SUBSCRIPTION.slice(1),
+            path: "subscription/",
             element: (
               <OnboardingSubscriptionGuardian>
                 <SubscriptionPage />
@@ -90,7 +91,12 @@ const router = createBrowserRouter([
             <DashboardGuardian />
           </AuthProvider>
         ),
-        children: [],
+        children: [
+          {
+            index: true,
+            element: <DashboardLayout />,
+          },
+        ],
       },
       {
         path: "*",

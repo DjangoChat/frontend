@@ -1,3 +1,4 @@
 export * from "./Auth"
 export * from "./Errors"
 export * from "./Price"
+export * from "./Profile"
