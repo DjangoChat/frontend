@@ -24,7 +24,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useLoginMutation,
-  validate,
+  validateSignIn,
 } from "../../../redux"
 import { AuthFooter, AuthHeader, AuthLayout } from "../components"
 
@@ -39,7 +39,7 @@ export function SignInPage() {
 
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
-    dispatch(validate())
+    dispatch(validateSignIn())
 
     const hasErrors = Object.values(errors).some(Boolean)
     if (hasErrors || !email.trim() || !password.trim()) return

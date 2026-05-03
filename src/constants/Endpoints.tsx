@@ -7,8 +7,9 @@ export const ENDPOINT = {
   REGISTER: "/register/",
   REFRESH: "/refresh-token/",
   ME: "/me/",
-  PROFILE: "/profile/",
+  PROFILE: "/profiles/",
   PRICE: "/prices/",
+  STRIPE: "/stripe/",
 } as const
 
 export type Endpoint = (typeof ENDPOINT)[keyof typeof ENDPOINT]

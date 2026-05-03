@@ -1,8 +1,8 @@
 export const GROUPS = {
-  MEMBER: "Member",
-  MAINTAINER: "Maintainer",
-  ANALITICAL: "Analitical",
-  ADMIN: "Admin",
+  MEMBER: "MEMBER",
+  MAINTAINER: "MAINTAINER",
+  ANALITICAL: "ANALITICAL",
+  ADMIN: "ADMIN",
 } as const
 
 export type GroupKey = (typeof GROUPS)[keyof typeof GROUPS]

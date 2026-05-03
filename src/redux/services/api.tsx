@@ -16,6 +16,14 @@ const baseQueryWithReauth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
+  // Serialize Date objects in request body
+  if (typeof args === "object" && args.body) {
+    const body = args.body as Record<string, unknown>
+    if (body.birth_date instanceof Date) {
+      body.birth_date = body.birth_date.toISOString().split("T")[0]
+    }
+  }
+
   // Attempt the initial request
   let result = await baseQuery(args, api, extraOptions)
 

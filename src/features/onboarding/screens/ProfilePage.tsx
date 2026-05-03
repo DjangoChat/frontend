@@ -1,6 +1,5 @@
-import { Edit } from "@mui/icons-material"
+import { Edit, Person2 as Person2Icon } from "@mui/icons-material"
 import {
-  AspectRatio,
   Box,
   Button,
   Card,
@@ -18,18 +17,21 @@ import {
 } from "@mui/joy"
 import { useState } from "react"
 import { useIntlayer } from "react-intlayer"
-import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router"
 import { ROUTES_KEYS } from "../../../constants"
 import type { RootState } from "../../../redux"
 import {
   setBirthDate,
   setCustomGender,
+  setErrors,
   setFirstName,
   setGender,
   setLastName,
   setNickname,
   useAddProfileMutation,
+  useAppDispatch,
+  useAppSelector,
+  validateProfile,
 } from "../../../redux"
 
 export const ProfilePage = () => {
@@ -47,12 +49,11 @@ export const ProfilePage = () => {
     other,
     custom,
     save,
-    cancel,
     saving: savingLabel,
   } = useIntlayer("profile")
 
-  const profile = useSelector((state: RootState) => state.profile)
-  const dispatch = useDispatch()
+  const profile = useAppSelector((state: RootState) => state.profile)
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const [addProfile, { isLoading: isSaving }] = useAddProfileMutation()
@@ -69,35 +70,54 @@ export const ProfilePage = () => {
     }
   }
 
-  const handleSave = () => {
-    addProfile({
-      nickname: profile.nickname ?? "",
-      first_name: profile.first_name ?? "",
-      last_name: profile.last_name ?? "",
-      gender: profile.gender ?? "",
-      custom_gender: profile.custom_gender ?? "",
-      birth_date: profile.birth_date ?? new Date(),
-    })
-      .unwrap()
-      .then(() => {
-        void navigate(ROUTES_KEYS.ONBOARDING)
-      })
-      .catch(() => {
-        console.log("error")
-      })
+  const handleSave = async () => {
+    dispatch(validateProfile())
+
+    // Check validation errors from the current state
+    const currentErrors = Object.keys(profile.errors).filter(
+      key => profile.errors[key as keyof typeof profile.errors],
+    )
+
+    if (currentErrors.length > 0) {
+      return
+    }
+
+    try {
+      await addProfile({
+        nickname: profile.nickname ?? "",
+        first_name: profile.first_name ?? "",
+        last_name: profile.last_name ?? "",
+        gender: profile.gender ?? "",
+        custom_gender: profile.custom_gender ?? "",
+        birth_date: profile.birth_date ?? new Date(),
+      }).unwrap()
+
+      dispatch(setErrors({}))
+      void navigate(ROUTES_KEYS.ONBOARDING)
+    } catch (error: unknown) {
+      console.error("Profile save error:", error)
+    }
   }
 
   return (
-    <Box sx={{ flex: 1, width: "100%" }}>
+    <Box
+      sx={{
+        flex: 1,
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       {/* Main Content */}
       <Stack
         spacing={3}
         sx={{
           display: "flex",
           maxWidth: "800px",
-          mx: "auto",
-          px: { xs: 0, md: 0 },
-          py: { xs: 0, md: 0 },
+          width: "100%",
+          px: { xs: 2, md: 0 },
         }}
       >
         {/* Personal Info Card */}
@@ -110,40 +130,86 @@ export const ProfilePage = () => {
           </Box>
           <Divider />
 
+          {/* Validation Errors Display */}
+          {Object.entries(profile.errors).filter(([, error]) => error).length >
+            0 && (
+            <Box
+              sx={{
+                p: 1.5,
+                mb: 2,
+                bgcolor: "danger.softBg",
+                borderRadius: "sm",
+                border: "1px solid",
+                borderColor: "danger.outlinedBorder",
+              }}
+            >
+              <Typography
+                level="body-sm"
+                color="danger"
+                sx={{ fontWeight: "600", mb: 0.5 }}
+              >
+                Please fix the following errors:
+              </Typography>
+              <Stack spacing={0.5}>
+                {Object.entries(profile.errors)
+                  .filter(([, error]) => error)
+                  .map(([field, error]) => (
+                    <Typography key={field} level="body-xs" color="danger">
+                      • {error}
+                    </Typography>
+                  ))}
+              </Stack>
+            </Box>
+          )}
+
           {/* Desktop View */}
           <Stack
-            direction="row"
+            direction="column"
             spacing={3}
-            sx={{ display: { xs: "none", md: "flex" }, my: 2 }}
+            sx={{
+              display: { xs: "none", md: "flex" },
+              my: 2,
+              alignItems: "center",
+            }}
           >
             {/* Avatar Section */}
-            <Stack direction="column" spacing={1} sx={{ position: "relative" }}>
-              <AspectRatio
-                ratio="1"
-                maxHeight={200}
+            <Stack
+              direction="column"
+              spacing={1}
+              sx={{ position: "relative", alignItems: "center" }}
+            >
+              <Box
                 sx={{
-                  flex: 1,
-                  minWidth: 120,
+                  width: 150,
+                  height: 150,
                   borderRadius: "100%",
                   bgcolor: "neutral.softBg",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  overflow: "hidden",
                 }}
               >
                 {previewAvatar ? (
-                  <img src={previewAvatar} alt="Profile avatar" />
+                  <img
+                    src={previewAvatar}
+                    alt="Profile avatar"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      borderRadius: "100%",
+                    }}
+                  />
                 ) : (
-                  <Box
+                  <Person2Icon
                     sx={{
-                      fontSize: "3rem",
+                      fontSize: "5rem",
                       color: "neutral.plainColor",
                     }}
-                  >
-                    👤
-                  </Box>
+                  />
                 )}
-              </AspectRatio>
+              </Box>
               <IconButton
                 aria-label="upload new picture"
                 size="sm"
@@ -155,8 +221,8 @@ export const ProfilePage = () => {
                   position: "absolute",
                   zIndex: 2,
                   borderRadius: "50%",
-                  left: 100,
-                  top: 170,
+                  right: 0,
+                  bottom: 0,
                   boxShadow: "sm",
                 }}
               >
@@ -171,7 +237,7 @@ export const ProfilePage = () => {
             </Stack>
 
             {/* Form Fields */}
-            <Stack spacing={2} sx={{ flexGrow: 1 }}>
+            <Stack spacing={2} sx={{ flexGrow: 1, width: "100%" }}>
               {/* Nickname and Name */}
               <Stack spacing={1}>
                 <FormLabel>{nickname as string}</FormLabel>
@@ -217,10 +283,10 @@ export const ProfilePage = () => {
                   }}
                 >
                   <Option value="">{gender as string}</Option>
-                  <Option value="male">{male as string}</Option>
-                  <Option value="female">{female as string}</Option>
-                  <Option value="other">{other as string}</Option>
-                  <Option value="custom">{custom as string}</Option>
+                  <Option value="MALE">{male as string}</Option>
+                  <Option value="FEMALE">{female as string}</Option>
+                  <Option value="OTHER">{other as string}</Option>
+                  <Option value="CUSTOM">{custom as string}</Option>
                 </Select>
               </FormControl>
 
@@ -266,21 +332,30 @@ export const ProfilePage = () => {
           >
             {/* Avatar Section Mobile */}
             <Stack direction="row" spacing={2} sx={{ position: "relative" }}>
-              <AspectRatio
-                ratio="1"
-                maxHeight={108}
+              <Box
                 sx={{
-                  flex: 1,
-                  minWidth: 108,
+                  width: 108,
+                  height: 108,
                   borderRadius: "100%",
                   bgcolor: "neutral.softBg",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  flexShrink: 0,
+                  overflow: "hidden",
                 }}
               >
                 {previewAvatar ? (
-                  <img src={previewAvatar} alt="Profile avatar" />
+                  <img
+                    src={previewAvatar}
+                    alt="Profile avatar"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      borderRadius: "100%",
+                    }}
+                  />
                 ) : (
                   <Box
                     sx={{
@@ -291,7 +366,7 @@ export const ProfilePage = () => {
                     👤
                   </Box>
                 )}
-              </AspectRatio>
+              </Box>
               <IconButton
                 aria-label="upload new picture"
                 size="sm"
@@ -401,22 +476,16 @@ export const ProfilePage = () => {
 
           {/* Action Buttons */}
           <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
-            <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-              <Button
-                size="sm"
-                variant="outlined"
-                color="neutral"
-                onClick={() => {
-                  setPreviewAvatar(null)
-                }}
-              >
-                {cancel as string}
-              </Button>
+            <CardActions sx={{ justifyContent: "center", pt: 2 }}>
               <Button
                 size="sm"
                 variant="solid"
-                onClick={handleSave}
+                color="success"
+                onClick={() => {
+                  void handleSave()
+                }}
                 loading={isSaving}
+                disabled={isSaving}
               >
                 {isSaving ? (savingLabel as string) : (save as string)}
               </Button>

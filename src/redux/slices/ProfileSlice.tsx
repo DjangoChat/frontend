@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import type { ProfileBasic } from "../../types"
+import { isNotBlank } from "../../utils"
 
 type ProfileErrors = {
   nickname?: string
@@ -79,6 +80,35 @@ const profileSlice = createSlice({
     resetProfile() {
       return initialState
     },
+    validateProfile(state) {
+      const errors: ProfileErrors = {}
+
+      if (!isNotBlank(state.nickname ?? "")) {
+        errors.nickname = "Nickname is required"
+      }
+
+      if (!isNotBlank(state.first_name ?? "")) {
+        errors.first_name = "First name is required"
+      }
+
+      if (!isNotBlank(state.last_name ?? "")) {
+        errors.last_name = "Last name is required"
+      }
+
+      if (!isNotBlank(state.gender ?? "")) {
+        errors.gender = "Gender is required"
+      }
+
+      if (state.gender === "custom" && !isNotBlank(state.custom_gender ?? "")) {
+        errors.custom_gender = "Please specify your gender"
+      }
+
+      if (!state.birth_date) {
+        errors.birth_date = "Birth date is required"
+      }
+
+      state.errors = errors
+    },
   },
 })
 
@@ -95,6 +125,7 @@ export const {
   setLoading,
   setSaving,
   resetProfile,
+  validateProfile,
 } = profileSlice.actions
 
 export const profileReducer = profileSlice.reducer

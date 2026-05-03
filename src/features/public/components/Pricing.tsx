@@ -12,7 +12,7 @@ import {
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import { ROUTES_KEYS } from "../../../constants"
-import { useGetAllPricesQuery } from "../../../redux/services/PriceApi"
+import { useGetAllPricesQuery } from "../../../redux"
 
 const PERIODS = ["monthly", "trimester", "annual"]
 

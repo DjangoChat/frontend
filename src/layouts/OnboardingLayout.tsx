@@ -1,7 +1,7 @@
-import { Box, Container, Stack, Typography } from "@mui/joy"
+import { Box, Stack, Typography } from "@mui/joy"
 import { useIntlayer } from "react-intlayer"
 import { Outlet } from "react-router"
-import { TopBar } from "./TopBar"
+import { OnboardingHeader } from "./OnboardingHeader"
 
 export const OnboardingLayout = () => {
   const { copyright } = useIntlayer("signin")
@@ -15,34 +15,51 @@ export const OnboardingLayout = () => {
         bgcolor: "background.body",
       }}
     >
-      {/* Header */}
-      <TopBar />
+      {/* Centered Content Wrapper */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          maxWidth: "md",
+          mx: "auto",
+          width: "100%",
+          px: { xs: 2, sm: 3, md: 4 },
+        }}
+      >
+        {/* Header */}
+        <OnboardingHeader />
 
-      {/* Main Content */}
-      <Box component="main" sx={{ flex: 1, width: "100%" }}>
-        <Container
-          maxWidth="md"
-          sx={{
-            py: { xs: 4, md: 6 },
-            px: { xs: 2, sm: 3, md: 4 },
-          }}
-        >
-          <Stack
+        {/* Main Content */}
+        <Box component="main" sx={{ flex: 1, width: "100%", overflow: "auto" }}>
+          <Box
             sx={{
-              gap: 3,
-              minHeight: "calc(100vh - 200px)",
+              py: { xs: 4, md: 6 },
+              height: "100%",
             }}
           >
-            <Outlet />
-          </Stack>
-        </Container>
-      </Box>
+            <Stack
+              sx={{
+                gap: 3,
+                height: "100%",
+              }}
+            >
+              <Outlet />
+            </Stack>
+          </Box>
+        </Box>
 
-      {/* Footer */}
-      <Box component="footer" sx={{ py: 3, mt: "auto" }}>
-        <Typography level="body-xs" sx={{ textAlign: "center" }}>
-          {copyright as string} {new Date().getFullYear()}
-        </Typography>
+        {/* Footer */}
+        <Box
+          component="footer"
+          sx={{
+            py: 3,
+          }}
+        >
+          <Typography level="body-xs" sx={{ textAlign: "center" }}>
+            {copyright as string} {new Date().getFullYear()}
+          </Typography>
+        </Box>
       </Box>
     </Box>
   )

@@ -67,10 +67,6 @@ const profileContent = {
       en: "Save",
       es: "Guardar",
     }),
-    cancel: t({
-      en: "Cancel",
-      es: "Cancelar",
-    }),
     saving: t({
       en: "Saving...",
       es: "Guardando...",

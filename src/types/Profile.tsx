@@ -13,9 +13,9 @@ export type ProfileBasic = {
 }
 
 export type ProfileResponse = ProfileBasic
-
-export type ProfileRequest = Partial<ProfileBasic>
+export type ProfileRequest = Partial<Omit<ProfileBasic, "birth_date">> & {
+  birth_date?: Date | string
+}
 
 export type AllProfileResponse = PaginationWrapper<ProfileBasic>
-
 export type AllProfileRequest = Partial<Pagination> & Partial<Search>

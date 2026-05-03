@@ -34,7 +34,7 @@ const signinSlice = createSlice({
       state.password = ""
       state.errors = {}
     },
-    validate(state) {
+    validateSignIn(state) {
       const errors: SignInErrors = {}
 
       if (!isNotBlank(state.email)) {
@@ -54,5 +54,6 @@ const signinSlice = createSlice({
   },
 })
 
-export const { setEmail, setPassword, clear, validate } = signinSlice.actions
+export const { setEmail, setPassword, clear, validateSignIn } =
+  signinSlice.actions
 export const signinReducer = signinSlice.reducer
