@@ -5,5 +5,5 @@ export type CheckOutSessionRequest = {
 }
 
 export type CheckOutSessionResponse = {
-  checkout_session_id: string
+  stripe_session_url: string
 }

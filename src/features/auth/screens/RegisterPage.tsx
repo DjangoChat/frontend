@@ -1,3 +1,5 @@
+import VisibilityIcon from "@mui/icons-material/Visibility"
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
 import {
   Box,
   Button,
@@ -5,11 +7,13 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
+  IconButton,
   Input,
   Link as JoyLink,
   Stack,
   Typography,
 } from "@mui/joy"
+import React from "react"
 import { useIntlayer } from "react-intlayer"
 import { Link, useNavigate } from "react-router"
 import blackAuthImage from "../../../assets/images/black-auth.jpg"
@@ -39,6 +43,8 @@ export function RegisterPage() {
   )
   const [register, { isLoading }] = useRegisterMutation()
   const navigate = useNavigate()
+  const [showPassword1, setShowPassword1] = React.useState(false)
+  const [showPassword2, setShowPassword2] = React.useState(false)
 
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -172,10 +178,25 @@ export function RegisterPage() {
               <FormControl required error={!!errors.password1}>
                 <FormLabel>{content.passwordLabel as string}</FormLabel>
                 <Input
-                  type="password"
+                  type={showPassword1 ? "text" : "password"}
                   name="password1"
                   value={password1}
                   onChange={e => dispatch(setPassword1(e.target.value))}
+                  endDecorator={
+                    <IconButton
+                      variant="plain"
+                      color="neutral"
+                      onClick={() => {
+                        setShowPassword1(!showPassword1)
+                      }}
+                    >
+                      {showPassword1 ? (
+                        <VisibilityOffIcon />
+                      ) : (
+                        <VisibilityIcon />
+                      )}
+                    </IconButton>
+                  }
                 />
                 {errors.password1 && (
                   <FormHelperText>{errors.password1}</FormHelperText>
@@ -184,10 +205,25 @@ export function RegisterPage() {
               <FormControl required error={!!errors.password2}>
                 <FormLabel>{content.confirmPasswordLabel as string}</FormLabel>
                 <Input
-                  type="password"
+                  type={showPassword2 ? "text" : "password"}
                   name="password2"
                   value={password2}
                   onChange={e => dispatch(setPassword2(e.target.value))}
+                  endDecorator={
+                    <IconButton
+                      variant="plain"
+                      color="neutral"
+                      onClick={() => {
+                        setShowPassword2(!showPassword2)
+                      }}
+                    >
+                      {showPassword2 ? (
+                        <VisibilityOffIcon />
+                      ) : (
+                        <VisibilityIcon />
+                      )}
+                    </IconButton>
+                  }
                 />
                 {errors.password2 && (
                   <FormHelperText>{errors.password2}</FormHelperText>

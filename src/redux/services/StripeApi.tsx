@@ -12,7 +12,7 @@ export const stripeApi = api.injectEndpoints({
       CheckOutSessionRequest
     >({
       query: data => ({
-        url: `${ENDPOINT.STRIPE}/check-out-session`,
+        url: `${ENDPOINT.STRIPE}check-out-session/`,
         method: "POST",
         body: data,
       }),

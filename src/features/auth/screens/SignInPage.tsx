@@ -1,3 +1,5 @@
+import VisibilityIcon from "@mui/icons-material/Visibility"
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
 import {
   Box,
   Button,
@@ -6,11 +8,13 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
+  IconButton,
   Input,
   Link as JoyLink,
   Stack,
   Typography,
 } from "@mui/joy"
+import React from "react"
 import { useIntlayer } from "react-intlayer"
 import { Link, useNavigate } from "react-router"
 import blackAuthImage from "../../../assets/images/black-auth.jpg"
@@ -36,6 +40,7 @@ export function SignInPage() {
   const { email, password, errors } = useAppSelector(state => state.signin)
   const [login, { isLoading }] = useLoginMutation()
   const navigate = useNavigate()
+  const [showPassword, setShowPassword] = React.useState(false)
 
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -142,10 +147,25 @@ export function SignInPage() {
               <FormControl required error={!!errors.password}>
                 <FormLabel>{content.passwordLabel as string}</FormLabel>
                 <Input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={password}
                   onChange={e => dispatch(setPassword(e.target.value))}
+                  endDecorator={
+                    <IconButton
+                      variant="plain"
+                      color="neutral"
+                      onClick={() => {
+                        setShowPassword(!showPassword)
+                      }}
+                    >
+                      {showPassword ? (
+                        <VisibilityOffIcon />
+                      ) : (
+                        <VisibilityIcon />
+                      )}
+                    </IconButton>
+                  }
                 />
                 {errors.password && (
                   <FormHelperText>{errors.password}</FormHelperText>

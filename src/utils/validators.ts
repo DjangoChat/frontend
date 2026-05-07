@@ -32,5 +32,5 @@ export function hasNumber(value: string): boolean {
 }
 
 export function hasSpecialCharacter(value: string): boolean {
-  return /[!@#$%^&*()_+\-=[]{};':"\\|,.<>?]/.test(value)
+  return /[^a-zA-Z0-9]/.test(value)
 }
