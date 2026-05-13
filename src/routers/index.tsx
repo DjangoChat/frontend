@@ -3,11 +3,16 @@ import { getHTMLTextDir, localeMap } from "intlayer"
 import { useEffect } from "react"
 import { IntlayerProvider } from "react-intlayer"
 import { createBrowserRouter, Outlet } from "react-router"
-import { ROUTES_KEYS } from "../constants"
+import { GROUPS, ROUTES_KEYS } from "../constants"
 import { AuthProvider } from "../contexts"
+import { Plan, Price } from "../features/admin"
+import { Stats } from "../features/analitical"
 import { RegisterPage, RegisterSuccessPage, SignInPage } from "../features/auth"
+import { Report } from "../features/maintainer"
+import { Agent, Chat, Group, Subscription } from "../features/member"
 import { ProfilePage, SubscriptionPage } from "../features/onboarding"
 import { LandingPage, NotFoundPage } from "../features/public"
+import { Home, Profile, Settings } from "../features/shared"
 import { OnboardingLayout } from "../layouts"
 import DashboardLayout from "../layouts/DashboardLayout"
 import {
@@ -15,6 +20,7 @@ import {
   OnboardingProfileGuardian,
   OnboardingSubscriptionGuardian,
   OnboardinGuardian,
+  RoleGuardian,
 } from "./Guardians"
 
 const useI18nHTMLAttributes = (locale: LocalesValues) => {
@@ -88,13 +94,102 @@ const router = createBrowserRouter([
         path: ROUTES_KEYS.DASHBOARD.slice(1),
         element: (
           <AuthProvider>
-            <DashboardGuardian />
+            <DashboardGuardian children={<DashboardLayout />} />
           </AuthProvider>
         ),
         children: [
           {
             index: true,
-            element: <DashboardLayout />,
+            element: (
+              <RoleGuardian
+                children={<Home />}
+                roles={[
+                  GROUPS.ADMIN,
+                  GROUPS.ANALITICAL,
+                  GROUPS.MAINTAINER,
+                  GROUPS.MEMBER,
+                ]}
+              />
+            ),
+          },
+          {
+            path: "chat/",
+            element: (
+              <RoleGuardian children={<Chat />} roles={[GROUPS.MEMBER]} />
+            ),
+          },
+          {
+            path: "group/",
+            element: (
+              <RoleGuardian children={<Group />} roles={[GROUPS.MEMBER]} />
+            ),
+          },
+          {
+            path: "agent/",
+            element: (
+              <RoleGuardian children={<Agent />} roles={[GROUPS.MEMBER]} />
+            ),
+          },
+          {
+            path: "subscription/",
+            element: (
+              <RoleGuardian
+                children={<Subscription />}
+                roles={[GROUPS.MEMBER]}
+              />
+            ),
+          },
+          {
+            path: "report/",
+            element: (
+              <RoleGuardian children={<Report />} roles={[GROUPS.MAINTAINER]} />
+            ),
+          },
+          {
+            path: "stat/",
+            element: (
+              <RoleGuardian children={<Stats />} roles={[GROUPS.ANALITICAL]} />
+            ),
+          },
+          {
+            path: "plan/",
+            element: (
+              <RoleGuardian children={<Plan />} roles={[GROUPS.ADMIN]} />
+            ),
+          },
+          {
+            path: "price/",
+            element: (
+              <RoleGuardian children={<Price />} roles={[GROUPS.ADMIN]} />
+            ),
+          },
+          {
+            path: "profile/",
+            element: (
+              <RoleGuardian
+                children={<Profile />}
+                roles={[
+                  GROUPS.ADMIN,
+                  GROUPS.ANALITICAL,
+                  GROUPS.MAINTAINER,
+                  GROUPS.MEMBER,
+                ]}
+              />
+            ),
+          },
+          {
+            path: "setting/",
+            element: (
+              <RoleGuardian
+                children={<Settings />}
+                roles={[
+                  GROUPS.ADMIN,
+                  GROUPS.ANALITICAL,
+                  GROUPS.MAINTAINER,
+                  GROUPS.MEMBER,
+                ]}
+              />
+            ),
           },
         ],
       },

@@ -8,6 +8,7 @@ export type UserBasic = {
   last_name: string
   nickname: string
   group: string
+  avatar: string | null
 }
 
 export type SuscriptionBasic = {

@@ -19,6 +19,7 @@ export const store = configureStore({
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(api.middleware, errorMiddleware),
+  devTools: true,
 })
 
 export type RootState = ReturnType<typeof store.getState>

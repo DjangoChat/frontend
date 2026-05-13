@@ -285,7 +285,7 @@ export const ProfilePage = () => {
                   <Option value="">{gender as string}</Option>
                   <Option value="MALE">{male as string}</Option>
                   <Option value="FEMALE">{female as string}</Option>
-                  <Option value="OTHER">{other as string}</Option>
+                  <Option value="NONE">{other as string}</Option>
                   <Option value="CUSTOM">{custom as string}</Option>
                 </Select>
               </FormControl>

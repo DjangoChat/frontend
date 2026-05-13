@@ -16,8 +16,10 @@ export const stripeApi = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Auth"],
     }),
   }),
+  overrideExisting: false,
 })
 
 export const { useCheckOutSessionMutation } = stripeApi

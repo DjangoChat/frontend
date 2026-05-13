@@ -1,6 +1,7 @@
 import type { ReactNode } from "react"
 import { Navigate } from "react-router"
-import { ROUTES_KEYS } from "../constants"
+import { AUTH_STATES, ROUTES_KEYS } from "../constants"
+import type { GroupKey } from "../constants/Groups"
 import { GROUPS } from "../constants/Groups"
 import { useAuth } from "../hooks"
 
@@ -9,13 +10,17 @@ type GuardianProps = {
 }
 
 export const OnboardingProfileGuardian = ({ children }: GuardianProps) => {
-  const { user, isLoading } = useAuth()
+  const { user, status } = useAuth()
 
-  if (isLoading) {
+  if (status === AUTH_STATES.LOADING) {
     return null
   }
 
-  if (user?.user !== null) {
+  if (!user || status === AUTH_STATES.UNAUTHENTICATED) {
+    return <Navigate to={ROUTES_KEYS.ROOT} />
+  }
+
+  if (user.user !== null) {
     return <Navigate to={ROUTES_KEYS.ONBOARDING} />
   }
 
@@ -23,14 +28,14 @@ export const OnboardingProfileGuardian = ({ children }: GuardianProps) => {
 }
 
 export const OnboardingSubscriptionGuardian = ({ children }: GuardianProps) => {
-  const { user, isLoading } = useAuth()
+  const { user, status } = useAuth()
 
-  if (isLoading) {
+  if (status === AUTH_STATES.LOADING) {
     return null
   }
 
-  if (!user) {
-    return <Navigate to={ROUTES_KEYS.LOGIN} />
+  if (!user || status === AUTH_STATES.UNAUTHENTICATED) {
+    return <Navigate to={ROUTES_KEYS.ROOT} />
   }
 
   // Allow access only if subscription is incomplete AND user is a MEMBER
@@ -46,21 +51,16 @@ export const OnboardingSubscriptionGuardian = ({ children }: GuardianProps) => {
 }
 
 export const OnboardinGuardian = () => {
-  const { isAuth, user, isLoading } = useAuth()
+  const { user, status } = useAuth()
 
-  if (isLoading) {
+  if (status === AUTH_STATES.LOADING) {
     return null
   }
 
-  if (!isAuth) {
-    return <Navigate to={ROUTES_KEYS.LOGIN} />
+  if (!user || status === AUTH_STATES.UNAUTHENTICATED) {
+    return <Navigate to={ROUTES_KEYS.ROOT} />
   }
 
-  if (!user) {
-    return <Navigate to={ROUTES_KEYS.LOGIN} />
-  }
-
-  // If all onboarding steps are complete, redirect to dashboard
   if (
     user.user !== null &&
     user.subscription !== null &&
@@ -69,7 +69,6 @@ export const OnboardinGuardian = () => {
     return <Navigate to={ROUTES_KEYS.DASHBOARD} />
   }
 
-  // Check each incomplete step in order
   if (user.user === null) {
     return <Navigate to={ROUTES_KEYS.ONBOARDING_PROFILE} />
   }
@@ -78,23 +77,17 @@ export const OnboardinGuardian = () => {
     return <Navigate to={ROUTES_KEYS.ONBOARDING_SUBSCRIPTION} />
   }
 
-  // If user is on /onboarding/ index without being redirected above,
-  // they've completed all steps - redirect to dashboard
   return <Navigate to={ROUTES_KEYS.DASHBOARD} />
 }
 
 export const DashboardGuardian = ({ children }: GuardianProps) => {
-  const { isAuth, user, isLoading } = useAuth()
+  const { user, status } = useAuth()
 
-  if (isLoading) {
+  if (status === AUTH_STATES.LOADING) {
     return null
   }
 
-  if (!isAuth) {
-    return <Navigate to={ROUTES_KEYS.ROOT} />
-  }
-
-  if (!user) {
+  if (!user || status === AUTH_STATES.UNAUTHENTICATED) {
     return <Navigate to={ROUTES_KEYS.ROOT} />
   }
 
@@ -106,6 +99,21 @@ export const DashboardGuardian = ({ children }: GuardianProps) => {
   // Redirect members without subscription to subscription onboarding
   if (user.subscription === null && user.user.group === GROUPS.MEMBER) {
     return <Navigate to={ROUTES_KEYS.ONBOARDING_SUBSCRIPTION} />
+  }
+
+  return <>{children}</>
+}
+
+type RoleGuardianProps = {
+  children?: ReactNode
+  roles: GroupKey[]
+}
+
+export const RoleGuardian = ({ children, roles }: RoleGuardianProps) => {
+  const { user } = useAuth()
+
+  if (!user?.user?.group || !roles.includes(user.user.group as GroupKey)) {
+    return <Navigate to={ROUTES_KEYS.DASHBOARD} />
   }
 
   return <>{children}</>

@@ -30,6 +30,7 @@ export const profileApi = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Auth"],
     }),
 
     updateProfile: build.mutation<ProfileResponse, ProfileRequest>({
@@ -38,6 +39,7 @@ export const profileApi = api.injectEndpoints({
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: ["Auth"],
     }),
 
     patchProfile: build.mutation<ProfileResponse, ProfileRequest>({
@@ -46,8 +48,10 @@ export const profileApi = api.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
+      invalidatesTags: ["Auth"],
     }),
   }),
+  overrideExisting: false,
 })
 
 export const {

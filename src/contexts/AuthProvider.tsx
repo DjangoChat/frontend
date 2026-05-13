@@ -1,4 +1,6 @@
-import { createContext, useEffect, useState, type ReactNode } from "react"
+import { createContext, type ReactNode } from "react"
+import type { AuthStates } from "../constants"
+import { AUTH_STATES } from "../constants"
 import { useMeQuery } from "../redux"
 import type { LoginResponse } from "../types"
 
@@ -8,36 +10,24 @@ type ContextProviderProps = {
 
 export const AuthContext = createContext<{
   user: LoginResponse | null
-  isAuth: boolean
-  isLoading: boolean
+  status: AuthStates
 }>({
   user: null,
-  isAuth: false,
-  isLoading: false,
+  status: AUTH_STATES.LOADING,
 })
 
 export const AuthProvider = ({ children }: ContextProviderProps) => {
-  const [user, setUser] = useState<LoginResponse | null>(null)
-  const [isAuth, setIsAuth] = useState<boolean>(false)
-
-  const { data, isError, isLoading } = useMeQuery(null)
-
-  useEffect(() => {
-    if (data) {
-      setUser(data)
-      setIsAuth(true)
-    } else if (isError) {
-      setUser(null)
-      setIsAuth(false)
-    }
-  }, [data, isError])
+  const { data, isLoading } = useMeQuery(null)
 
   return (
     <AuthContext.Provider
       value={{
-        user,
-        isAuth,
-        isLoading: isLoading,
+        user: data ?? null,
+        status: isLoading
+          ? AUTH_STATES.LOADING
+          : data
+            ? AUTH_STATES.AUTHENTICATED
+            : AUTH_STATES.UNAUTHENTICATED,
       }}
     >
       {children}
