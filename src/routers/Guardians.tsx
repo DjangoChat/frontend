@@ -1,5 +1,7 @@
 import type { ReactNode } from "react"
+import { useEffect } from "react"
 import { Navigate } from "react-router"
+import { LoadingPage } from "../components"
 import { AUTH_STATES, ROUTES_KEYS } from "../constants"
 import type { GroupKey } from "../constants/Groups"
 import { GROUPS } from "../constants/Groups"
@@ -13,7 +15,7 @@ export const OnboardingProfileGuardian = ({ children }: GuardianProps) => {
   const { user, status } = useAuth()
 
   if (status === AUTH_STATES.LOADING) {
-    return null
+    return <LoadingPage />
   }
 
   if (!user || status === AUTH_STATES.UNAUTHENTICATED) {
@@ -31,14 +33,13 @@ export const OnboardingSubscriptionGuardian = ({ children }: GuardianProps) => {
   const { user, status } = useAuth()
 
   if (status === AUTH_STATES.LOADING) {
-    return null
+    return <LoadingPage />
   }
 
   if (!user || status === AUTH_STATES.UNAUTHENTICATED) {
     return <Navigate to={ROUTES_KEYS.ROOT} />
   }
 
-  // Allow access only if subscription is incomplete AND user is a MEMBER
   if (user.subscription !== null) {
     return <Navigate to={ROUTES_KEYS.ONBOARDING} />
   }
@@ -51,10 +52,14 @@ export const OnboardingSubscriptionGuardian = ({ children }: GuardianProps) => {
 }
 
 export const OnboardinGuardian = () => {
-  const { user, status } = useAuth()
+  const { user, status, refetchData } = useAuth()
+
+  useEffect(() => {
+    void refetchData()
+  }, [refetchData])
 
   if (status === AUTH_STATES.LOADING) {
-    return null
+    return <LoadingPage />
   }
 
   if (!user || status === AUTH_STATES.UNAUTHENTICATED) {
@@ -84,19 +89,17 @@ export const DashboardGuardian = ({ children }: GuardianProps) => {
   const { user, status } = useAuth()
 
   if (status === AUTH_STATES.LOADING) {
-    return null
+    return <LoadingPage />
   }
 
   if (!user || status === AUTH_STATES.UNAUTHENTICATED) {
     return <Navigate to={ROUTES_KEYS.ROOT} />
   }
 
-  // Redirect incomplete profiles to onboarding
   if (user.user === null) {
     return <Navigate to={ROUTES_KEYS.ONBOARDING_PROFILE} />
   }
 
-  // Redirect members without subscription to subscription onboarding
   if (user.subscription === null && user.user.group === GROUPS.MEMBER) {
     return <Navigate to={ROUTES_KEYS.ONBOARDING_SUBSCRIPTION} />
   }

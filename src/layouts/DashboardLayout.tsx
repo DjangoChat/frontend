@@ -23,7 +23,7 @@ import ListItemButton, { listItemButtonClasses } from "@mui/joy/ListItemButton"
 import ListItemContent from "@mui/joy/ListItemContent"
 import Sheet from "@mui/joy/Sheet"
 import Typography from "@mui/joy/Typography"
-import { Outlet } from "react-router"
+import { Outlet, useNavigate } from "react-router"
 import { ThemeToggleButton } from "../components/ThemeToggleButton"
 import type { RouteKey } from "../constants"
 import { ROUTES_KEYS } from "../constants"
@@ -137,8 +137,8 @@ const BOTTOM_MENU_ITEMS: MenuItem[] = [
 
 function Sidebar() {
   const { user } = useAuth()
+  const navigate = useNavigate()
 
-  // DashboardGuardian ensures user is authenticated, so we can safely assume user exists
   if (!user?.user) {
     return null
   }
@@ -214,7 +214,10 @@ function Sidebar() {
         >
           {menuItems.map(item => (
             <ListItem key={item.id}>
-              <ListItemButton role="menuitem" component="a" href={item.href}>
+              <ListItemButton
+                role="menuitem"
+                onClick={() => void navigate(item.href)}
+              >
                 {item.icon}
                 <ListItemContent>
                   <Typography level="title-sm">{item.label}</Typography>
@@ -236,7 +239,10 @@ function Sidebar() {
         >
           {BOTTOM_MENU_ITEMS.map(item => (
             <ListItem key={item.id}>
-              <ListItemButton role="menuitem" component="a" href={item.href}>
+              <ListItemButton
+                role="menuitem"
+                onClick={() => void navigate(item.href)}
+              >
                 {item.icon}
                 <ListItemContent>
                   <Typography level="title-sm">{item.label}</Typography>
@@ -249,8 +255,9 @@ function Sidebar() {
             <ListItem>
               <ListItemButton
                 role="menuitem"
-                component="a"
-                href={ROUTES_KEYS.DASHBOARD_SUBSCRIPTION}
+                onClick={() =>
+                  void navigate(ROUTES_KEYS.DASHBOARD_SUBSCRIPTION)
+                }
               >
                 <PaidRoundedIcon />
                 <ListItemContent>
@@ -295,7 +302,6 @@ function DashboardLayout() {
           minHeight: "100dvh",
         }}
       >
-        {/* Main content area */}
         <Box sx={{ p: 2, flex: 1 }}>
           <Outlet />
         </Box>

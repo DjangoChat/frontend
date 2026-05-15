@@ -17,14 +17,14 @@ if (container) {
 
   root.render(
     <StrictMode>
-      <ContextContainer>
-        <StyleContainer>
-          <Provider store={store}>
+      <Provider store={store}>
+        <ContextContainer>
+          <StyleContainer>
             <RouterProvider router={router} />
             <SnackbarContainer />
-          </Provider>
-        </StyleContainer>
-      </ContextContainer>
+          </StyleContainer>
+        </ContextContainer>
+      </Provider>
     </StrictMode>,
   )
 } else {

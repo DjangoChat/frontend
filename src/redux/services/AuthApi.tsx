@@ -39,8 +39,6 @@ export const authApi = api.injectEndpoints({
         url: ENDPOINT.ME,
         method: "GET",
       }),
-      providesTags: ["Auth"],
-      keepUnusedDataFor: 600,
     }),
   }),
   overrideExisting: false,

@@ -73,7 +73,6 @@ export const ProfilePage = () => {
   const handleSave = async () => {
     dispatch(validateProfile())
 
-    // Check validation errors from the current state
     const currentErrors = Object.keys(profile.errors).filter(
       key => profile.errors[key as keyof typeof profile.errors],
     )

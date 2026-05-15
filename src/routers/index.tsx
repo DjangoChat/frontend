@@ -61,135 +61,142 @@ const router = createBrowserRouter([
         element: <RegisterSuccessPage />,
       },
       {
-        path: ROUTES_KEYS.ONBOARDING.slice(1),
-        element: (
-          <AuthProvider>
-            <OnboardingLayout />
-          </AuthProvider>
-        ),
+        element: <AuthProvider />,
         children: [
           {
-            index: true,
-            element: <OnboardinGuardian />,
+            path: ROUTES_KEYS.ONBOARDING.slice(1),
+            element: <OnboardingLayout />,
+            children: [
+              {
+                index: true,
+                element: <OnboardinGuardian />,
+              },
+              {
+                path: "profile/",
+                element: (
+                  <OnboardingProfileGuardian>
+                    <ProfilePage />
+                  </OnboardingProfileGuardian>
+                ),
+              },
+              {
+                path: "subscription/",
+                element: (
+                  <OnboardingSubscriptionGuardian>
+                    <SubscriptionPage />
+                  </OnboardingSubscriptionGuardian>
+                ),
+              },
+            ],
           },
           {
-            path: "profile/",
+            path: ROUTES_KEYS.DASHBOARD.slice(1),
             element: (
-              <OnboardingProfileGuardian>
-                <ProfilePage />
-              </OnboardingProfileGuardian>
+              <DashboardGuardian>
+                <DashboardLayout />
+              </DashboardGuardian>
             ),
-          },
-          {
-            path: "subscription/",
-            element: (
-              <OnboardingSubscriptionGuardian>
-                <SubscriptionPage />
-              </OnboardingSubscriptionGuardian>
-            ),
-          },
-        ],
-      },
-      {
-        path: ROUTES_KEYS.DASHBOARD.slice(1),
-        element: (
-          <AuthProvider>
-            <DashboardGuardian children={<DashboardLayout />} />
-          </AuthProvider>
-        ),
-        children: [
-          {
-            index: true,
-            element: (
-              <RoleGuardian
-                children={<Home />}
-                roles={[
-                  GROUPS.ADMIN,
-                  GROUPS.ANALITICAL,
-                  GROUPS.MAINTAINER,
-                  GROUPS.MEMBER,
-                ]}
-              />
-            ),
-          },
-          {
-            path: "chat/",
-            element: (
-              <RoleGuardian children={<Chat />} roles={[GROUPS.MEMBER]} />
-            ),
-          },
-          {
-            path: "group/",
-            element: (
-              <RoleGuardian children={<Group />} roles={[GROUPS.MEMBER]} />
-            ),
-          },
-          {
-            path: "agent/",
-            element: (
-              <RoleGuardian children={<Agent />} roles={[GROUPS.MEMBER]} />
-            ),
-          },
-          {
-            path: "subscription/",
-            element: (
-              <RoleGuardian
-                children={<Subscription />}
-                roles={[GROUPS.MEMBER]}
-              />
-            ),
-          },
-          {
-            path: "report/",
-            element: (
-              <RoleGuardian children={<Report />} roles={[GROUPS.MAINTAINER]} />
-            ),
-          },
-          {
-            path: "stat/",
-            element: (
-              <RoleGuardian children={<Stats />} roles={[GROUPS.ANALITICAL]} />
-            ),
-          },
-          {
-            path: "plan/",
-            element: (
-              <RoleGuardian children={<Plan />} roles={[GROUPS.ADMIN]} />
-            ),
-          },
-          {
-            path: "price/",
-            element: (
-              <RoleGuardian children={<Price />} roles={[GROUPS.ADMIN]} />
-            ),
-          },
-          {
-            path: "profile/",
-            element: (
-              <RoleGuardian
-                children={<Profile />}
-                roles={[
-                  GROUPS.ADMIN,
-                  GROUPS.ANALITICAL,
-                  GROUPS.MAINTAINER,
-                  GROUPS.MEMBER,
-                ]}
-              />
-            ),
-          },
-          {
-            path: "setting/",
-            element: (
-              <RoleGuardian
-                children={<Settings />}
-                roles={[
-                  GROUPS.ADMIN,
-                  GROUPS.ANALITICAL,
-                  GROUPS.MAINTAINER,
-                  GROUPS.MEMBER,
-                ]}
-              />
-            ),
+            children: [
+              {
+                index: true,
+                element: (
+                  <RoleGuardian
+                    children={<Home />}
+                    roles={[
+                      GROUPS.ADMIN,
+                      GROUPS.ANALITICAL,
+                      GROUPS.MAINTAINER,
+                      GROUPS.MEMBER,
+                    ]}
+                  />
+                ),
+              },
+              {
+                path: "chat/",
+                element: (
+                  <RoleGuardian children={<Chat />} roles={[GROUPS.MEMBER]} />
+                ),
+              },
+              {
+                path: "group/",
+                element: (
+                  <RoleGuardian children={<Group />} roles={[GROUPS.MEMBER]} />
+                ),
+              },
+              {
+                path: "agent/",
+                element: (
+                  <RoleGuardian children={<Agent />} roles={[GROUPS.MEMBER]} />
+                ),
+              },
+              {
+                path: "subscription/",
+                element: (
+                  <RoleGuardian
+                    children={<Subscription />}
+                    roles={[GROUPS.MEMBER]}
+                  />
+                ),
+              },
+              {
+                path: "report/",
+                element: (
+                  <RoleGuardian
+                    children={<Report />}
+                    roles={[GROUPS.MAINTAINER]}
+                  />
+                ),
+              },
+              {
+                path: "stat/",
+                element: (
+                  <RoleGuardian
+                    children={<Stats />}
+                    roles={[GROUPS.ANALITICAL]}
+                  />
+                ),
+              },
+              {
+                path: "plan/",
+                element: (
+                  <RoleGuardian children={<Plan />} roles={[GROUPS.ADMIN]} />
+                ),
+              },
+              {
+                path: "price/",
+                element: (
+                  <RoleGuardian children={<Price />} roles={[GROUPS.ADMIN]} />
+                ),
+              },
+              {
+                path: "profile/",
+                element: (
+                  <RoleGuardian
+                    children={<Profile />}
+                    roles={[
+                      GROUPS.ADMIN,
+                      GROUPS.ANALITICAL,
+                      GROUPS.MAINTAINER,
+                      GROUPS.MEMBER,
+                    ]}
+                  />
+                ),
+              },
+              {
+                path: "setting/",
+                element: (
+                  <RoleGuardian
+                    children={<Settings />}
+                    roles={[
+                      GROUPS.ADMIN,
+                      GROUPS.ANALITICAL,
+                      GROUPS.MAINTAINER,
+                      GROUPS.MEMBER,
+                    ]}
+                  />
+                ),
+              },
+            ],
           },
         ],
       },
