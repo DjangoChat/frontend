@@ -1,5 +1,7 @@
+export * from "./Agent"
 export * from "./Auth"
 export * from "./Errors"
+export * from "./Nature"
 export * from "./Price"
 export * from "./Profile"
 export * from "./Stipe"

@@ -10,7 +10,6 @@ import {
   Typography,
 } from "@mui/joy"
 import { useState } from "react"
-import { useIntlayer } from "react-intlayer"
 import {
   useCheckOutSessionMutation,
   useGetAllPricesQuery,
@@ -20,7 +19,6 @@ import type { CheckOutSessionRequest } from "../../../types"
 const PERIODS = ["monthly", "trimester", "annual"]
 
 export const SubscriptionPage = () => {
-  const { copyright } = useIntlayer("signin")
   const [checkOutSession, { isLoading }] = useCheckOutSessionMutation()
   const [selectedPeriod, setSelectedPeriod] = useState("monthly")
   const { data: prices = [] } = useGetAllPricesQuery(null)
@@ -251,12 +249,6 @@ export const SubscriptionPage = () => {
             )}
           </Grid>
         </Container>
-      </Box>
-
-      <Box component="footer" sx={{ py: 3, borderTop: "1px solid" }}>
-        <Typography level="body-xs" sx={{ textAlign: "center" }}>
-          {copyright as string} {new Date().getFullYear()}
-        </Typography>
       </Box>
     </Box>
   )

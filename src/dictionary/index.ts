@@ -1,3 +1,4 @@
+export { default as agentContent } from "./agent.content"
 export { default as ctaContent } from "./cta.content"
 export { default as featuresContent } from "./features.content"
 export { default as heroContent } from "./hero.content"

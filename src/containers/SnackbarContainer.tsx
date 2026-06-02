@@ -33,10 +33,20 @@ export function SnackbarContainer() {
               variant="plain"
               color={notification.severity}
               onClick={() => dispatch(removeNotification(notification.id))}
+              slotProps={{
+                root: {
+                  tabIndex: -1,
+                },
+              }}
             >
               <CloseIcon />
             </IconButton>
           }
+          slotProps={{
+            root: {
+              tabIndex: -1,
+            },
+          }}
           sx={{ position: "relative", right: 0, bottom: 0 }}
         >
           {notification.message}

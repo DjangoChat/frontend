@@ -4,7 +4,7 @@ import type { ReactNode } from "react"
 
 export function StyleContainer({ children }: { children: ReactNode }) {
   return (
-    <CssVarsProvider defaultMode="light">
+    <CssVarsProvider defaultMode="light" disableTransitionOnChange>
       <CssBaseline />
       {children}
     </CssVarsProvider>

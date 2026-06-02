@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { errorMiddleware } from "./middleware"
 import { api } from "./services"
 import {
+  agentReducer,
   notificationReducer,
   profileReducer,
   registerReducer,
@@ -12,6 +13,7 @@ import {
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
+    agentPage: agentReducer,
     notification: notificationReducer,
     signin: signinReducer,
     register: registerReducer,

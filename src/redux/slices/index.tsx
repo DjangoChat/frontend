@@ -1,3 +1,4 @@
+export * from "./AgentSlice"
 export * from "./NotificationSlice"
 export * from "./ProfileSlice"
 export * from "./RegisterSlice"

@@ -302,7 +302,7 @@ function DashboardLayout() {
           minHeight: "100dvh",
         }}
       >
-        <Box sx={{ p: 2, flex: 1 }}>
+        <Box sx={{ flex: 1, overflow: "auto" }}>
           <Outlet />
         </Box>
       </Box>

@@ -10,6 +10,8 @@ export const ENDPOINT = {
   PROFILE: "/profiles/",
   PRICE: "/prices/",
   STRIPE: "/stripe/",
+  AGENT: "/agents/",
+  NATURE: "/natures/",
 } as const
 
 export type Endpoint = (typeof ENDPOINT)[keyof typeof ENDPOINT]
