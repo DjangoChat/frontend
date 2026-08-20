@@ -1,12 +1,13 @@
 import { ENDPOINT } from "../../constants"
-import type { AllPrice } from "../../types"
+import type { AllPriceRequest, AllPriceResponse } from "../../types"
+import { buildQueryString } from "../../types/Utils"
 import { api } from "./api"
 
 export const priceApi = api.injectEndpoints({
   endpoints: build => ({
-    getAllPrices: build.query<AllPrice, null>({
-      query: () => ({
-        url: ENDPOINT.PRICE,
+    getAllPrices: build.query<AllPriceResponse, AllPriceRequest>({
+      query: (params: AllPriceRequest) => ({
+        url: `${ENDPOINT.PRICE}${buildQueryString(params)}`,
         method: "GET",
       }),
     }),

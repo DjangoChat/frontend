@@ -21,7 +21,10 @@ const PERIODS = ["monthly", "trimester", "annual"]
 export const SubscriptionPage = () => {
   const [checkOutSession, { isLoading }] = useCheckOutSessionMutation()
   const [selectedPeriod, setSelectedPeriod] = useState("monthly")
-  const { data: prices = [] } = useGetAllPricesQuery(null)
+  const { data } = useGetAllPricesQuery({
+    period__name: selectedPeriod,
+  })
+  const filteredPrices = data?.results ?? []
 
   const handleBuyClick = async (stripePriceId: string) => {
     const successUrl = `${window.location.origin}/onboarding/`
@@ -30,7 +33,7 @@ export const SubscriptionPage = () => {
     const payload: CheckOutSessionRequest = {
       success_url: successUrl,
       cancel_url: cancelUrl,
-      stripe_price_id: stripePriceId,
+      price_id: stripePriceId,
     }
 
     try {
@@ -40,11 +43,6 @@ export const SubscriptionPage = () => {
       console.error("Failed to create checkout session:", error)
     }
   }
-
-  // Filter prices by selected period
-  const filteredPrices = prices.filter(
-    price => price.period.toLowerCase() === selectedPeriod.toLowerCase(),
-  )
 
   return (
     <Box
@@ -223,7 +221,7 @@ export const SubscriptionPage = () => {
                     <Button
                       fullWidth
                       onClick={() => {
-                        void handleBuyClick(price.stripe_price_id)
+                        void handleBuyClick(price.id)
                       }}
                       loading={isLoading}
                       sx={{

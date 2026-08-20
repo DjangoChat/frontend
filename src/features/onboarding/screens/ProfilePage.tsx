@@ -28,9 +28,9 @@ import {
   setGender,
   setLastName,
   setNickname,
-  useAddProfileMutation,
   useAppDispatch,
   useAppSelector,
+  useCreateProfileParticipantMutation,
   validateProfile,
 } from "../../../redux"
 
@@ -56,7 +56,8 @@ export const ProfilePage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const [addProfile, { isLoading: isSaving }] = useAddProfileMutation()
+  const [createProfileParticipant, { isLoading: isSaving }] =
+    useCreateProfileParticipantMutation()
   const [previewAvatar, setPreviewAvatar] = useState<string | null>(null)
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +83,7 @@ export const ProfilePage = () => {
     }
 
     try {
-      await addProfile({
+      await createProfileParticipant({
         nickname: profile.nickname ?? "",
         first_name: profile.first_name ?? "",
         last_name: profile.last_name ?? "",

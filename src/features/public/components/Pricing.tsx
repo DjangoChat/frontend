@@ -18,8 +18,11 @@ const PERIODS = ["monthly", "trimester", "annual"]
 
 export const Pricing = () => {
   const navigate = useNavigate()
-  const { data: prices = [], isLoading, error } = useGetAllPricesQuery(null)
   const [selectedPeriod, setSelectedPeriod] = useState("monthly")
+  const { data, isLoading, error } = useGetAllPricesQuery({
+    period__name: selectedPeriod,
+  })
+  const filteredPrices = data?.results ?? []
 
   if (isLoading) {
     return (
@@ -38,11 +41,6 @@ export const Pricing = () => {
       </Box>
     )
   }
-
-  // Filter prices by selected period
-  const filteredPrices = prices.filter(
-    price => price.period.toLowerCase() === selectedPeriod.toLowerCase(),
-  )
 
   const handleGetStarted = () => {
     void navigate(ROUTES_KEYS.LOGIN)

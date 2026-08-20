@@ -1,7 +1,7 @@
 export type CheckOutSessionRequest = {
   success_url: string
   cancel_url: string
-  stripe_price_id: string
+  price_id: string
 }
 
 export type CheckOutSessionResponse = {

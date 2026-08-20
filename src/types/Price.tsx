@@ -1,4 +1,9 @@
 import type { UUID } from "crypto"
+import type { PaginationWrapper } from "./Utils"
+
+export type PriceParameters = {
+  period__name: string
+}
 
 export type BasicPrice = {
   id: UUID
@@ -6,10 +11,10 @@ export type BasicPrice = {
   period: string
   currency: string
   amount: number
-  stripe_price_id: string
 }
 
 export type PriceResponse = BasicPrice
 export type PriceRequest = Partial<BasicPrice>
 
-export type AllPrice = BasicPrice[]
+export type AllPriceResponse = PaginationWrapper<BasicPrice>
+export type AllPriceRequest = Partial<PriceParameters>
