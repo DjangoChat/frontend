@@ -37,7 +37,7 @@ export const authApi = api.injectEndpoints({
     me: build.query<LoginResponse, null>({
       query: () => ({
         url: ENDPOINT.ME,
-        method: "GET",
+        method: "POST",
       }),
     }),
   }),

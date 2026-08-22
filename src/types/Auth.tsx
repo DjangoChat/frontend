@@ -4,6 +4,7 @@ export type LoginRequest = {
 }
 
 export type UserBasic = {
+  required: boolean
   first_name: string
   last_name: string
   nickname: string
@@ -12,20 +13,22 @@ export type UserBasic = {
 }
 
 export type SuscriptionBasic = {
+  required: boolean
   plan: string
   status: string
   current_period_end: Date
 }
 
 export type AccessBasic = {
+  required: boolean
   has_access: boolean
   last_day: Date
 }
 
 export type LoginResponse = {
-  user: UserBasic | null
-  subscription: SuscriptionBasic | null
-  has_access: AccessBasic | null
+  user: UserBasic
+  subscription: SuscriptionBasic
+  has_access: AccessBasic
 }
 
 export type Register = {

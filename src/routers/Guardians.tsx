@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
-import { useEffect } from "react"
-import { Navigate } from "react-router"
+import { Navigate, Outlet } from "react-router"
 import { LoadingPage } from "../components"
+import type { AuthStates } from "../constants"
 import { AUTH_STATES, ROUTES_KEYS } from "../constants"
 import type { GroupKey } from "../constants/Groups"
 import { GROUPS } from "../constants/Groups"
@@ -11,18 +11,18 @@ type GuardianProps = {
   children?: ReactNode
 }
 
+function CheckUserIsLoading(status: AuthStates): boolean {
+  return status === AUTH_STATES.LOADING
+}
+
+function isNullable<T>(value: T): value is Extract<T, null | undefined> {
+  return value == null
+}
+
 export const OnboardingProfileGuardian = ({ children }: GuardianProps) => {
-  const { user, status } = useAuth()
+  const { user } = useAuth()
 
-  if (status === AUTH_STATES.LOADING) {
-    return <LoadingPage />
-  }
-
-  if (!user || status === AUTH_STATES.UNAUTHENTICATED) {
-    return <Navigate to={ROUTES_KEYS.ROOT} />
-  }
-
-  if (user.user !== null) {
+  if (isNullable(user.user)) {
     return <Navigate to={ROUTES_KEYS.ONBOARDING} />
   }
 
@@ -51,60 +51,34 @@ export const OnboardingSubscriptionGuardian = ({ children }: GuardianProps) => {
   return <>{children}</>
 }
 
-export const OnboardinGuardian = () => {
-  const { user, status, refetchData } = useAuth()
+export const AuthenticatedGuardian = () => {
+  const { user, status } = useAuth()
 
-  useEffect(() => {
-    void refetchData()
-  }, [refetchData])
-
-  if (status === AUTH_STATES.LOADING) {
+  if (CheckUserIsLoading(status)) {
     return <LoadingPage />
   }
 
-  if (!user || status === AUTH_STATES.UNAUTHENTICATED) {
+  if (isNullable(user)) {
     return <Navigate to={ROUTES_KEYS.ROOT} />
   }
 
   if (
-    user.user !== null &&
-    user.subscription !== null &&
-    user.has_access !== null
+    !isNullable(user.user.required) &&
+    !isNullable(user.subscription.required) &&
+    !isNullable(user.has_access.required)
   ) {
     return <Navigate to={ROUTES_KEYS.DASHBOARD} />
   }
 
-  if (user.user === null) {
+  if (isNullable(user.user)) {
     return <Navigate to={ROUTES_KEYS.ONBOARDING_PROFILE} />
   }
 
-  if (user.subscription === null && user.user.group === GROUPS.MEMBER) {
+  if (isNullable(user.subscription) && user.user.group === GROUPS.MEMBER) {
     return <Navigate to={ROUTES_KEYS.ONBOARDING_SUBSCRIPTION} />
   }
 
-  return <Navigate to={ROUTES_KEYS.DASHBOARD} />
-}
-
-export const DashboardGuardian = ({ children }: GuardianProps) => {
-  const { user, status } = useAuth()
-
-  if (status === AUTH_STATES.LOADING) {
-    return <LoadingPage />
-  }
-
-  if (!user || status === AUTH_STATES.UNAUTHENTICATED) {
-    return <Navigate to={ROUTES_KEYS.ROOT} />
-  }
-
-  if (user.user === null) {
-    return <Navigate to={ROUTES_KEYS.ONBOARDING_PROFILE} />
-  }
-
-  if (user.subscription === null && user.user.group === GROUPS.MEMBER) {
-    return <Navigate to={ROUTES_KEYS.ONBOARDING_SUBSCRIPTION} />
-  }
-
-  return <>{children}</>
+  return <Outlet />
 }
 
 type RoleGuardianProps = {

@@ -14,11 +14,11 @@ import { useNavigate } from "react-router"
 import { ROUTES_KEYS } from "../../../constants"
 import { useGetAllPricesQuery } from "../../../redux"
 
-const PERIODS = ["monthly", "trimester", "annual"]
+const PERIODS = ["MONTHLY", "TRIMESTER", "ANNUAL"]
 
 export const Pricing = () => {
   const navigate = useNavigate()
-  const [selectedPeriod, setSelectedPeriod] = useState("monthly")
+  const [selectedPeriod, setSelectedPeriod] = useState("MONTHLY")
   const { data, isLoading, error } = useGetAllPricesQuery({
     period__name: selectedPeriod,
   })
@@ -108,7 +108,7 @@ export const Pricing = () => {
                 }),
               }}
             >
-              {period}
+              {period.toLowerCase()}
             </Button>
           ))}
         </Box>
