@@ -1,6 +1,6 @@
 import { AuthProvider } from "../contexts"
 import { dashboardRoutes } from "./Dashboard.routers"
-import { AuthenticatedGuardian } from "./Guardians"
+import { AuthenticatedGuardian, UserSetUpGuardian } from "./Guardians"
 import { onboardingRoutes } from "./Onboarding.routers"
 
 export const authenticatedRoutes = () => [
@@ -9,7 +9,12 @@ export const authenticatedRoutes = () => [
     children: [
       {
         element: <AuthenticatedGuardian />,
-        children: [...onboardingRoutes(), ...dashboardRoutes()],
+        children: [
+          {
+            element: <UserSetUpGuardian />,
+            children: [...onboardingRoutes(), ...dashboardRoutes()],
+          },
+        ],
       },
     ],
   },

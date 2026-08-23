@@ -2,6 +2,7 @@ import { ROUTES_KEYS } from "../constants"
 import { ProfilePage, SubscriptionPage } from "../features/onboarding"
 import { OnboardingLayout } from "../layouts"
 import {
+  OnboardingGuardian,
   OnboardingProfileGuardian,
   OnboardingSubscriptionGuardian,
 } from "./Guardians"
@@ -9,23 +10,28 @@ import {
 export const onboardingRoutes = () => [
   {
     path: ROUTES_KEYS.ONBOARDING.slice(1),
-    element: <OnboardingLayout />,
+    element: <OnboardingGuardian />,
     children: [
       {
-        path: "profile/",
-        element: <OnboardingProfileGuardian />,
+        element: <OnboardingLayout />,
         children: [
           {
-            element: <ProfilePage />,
+            path: "profile/",
+            element: <OnboardingProfileGuardian />,
+            children: [
+              {
+                element: <ProfilePage />,
+              },
+            ],
           },
-        ],
-      },
-      {
-        path: "subscription/",
-        element: <OnboardingSubscriptionGuardian />,
-        children: [
           {
-            element: <SubscriptionPage />,
+            path: "subscription/",
+            element: <OnboardingSubscriptionGuardian />,
+            children: [
+              {
+                element: <SubscriptionPage />,
+              },
+            ],
           },
         ],
       },

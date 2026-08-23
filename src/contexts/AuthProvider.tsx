@@ -1,40 +1,80 @@
-import { createContext, useMemo } from "react"
+import { createContext, useCallback, useMemo } from "react"
 import { Outlet } from "react-router"
-import type { AuthStates } from "../constants"
-import { AUTH_STATES } from "../constants"
 import { useMeQuery } from "../redux"
 import type { LoginResponse } from "../types"
+import { AUTH_STATES } from "../constants"
 
-export const AuthContext = createContext<{
-  user: LoginResponse | null
-  status: AuthStates
-  isFetching: boolean
-  refetchData: () => Promise<void>
-}>({
-  user: null,
-  status: AUTH_STATES.LOADING,
-  isFetching: false,
-  refetchData: () => Promise.resolve(),
-})
+type AuthContextValue =
+  | {
+      status: AUTH_STATES.LOADING
+      user: null
+      isFetching: boolean
+      refetchData: () => Promise<void>
+    }
+  | {
+      status: AUTH_STATES.UNAUTHENTICATED
+      user: null
+      isFetching: boolean
+      refetchData: () => Promise<void>
+    }
+  | {
+      status: AUTH_STATES.AUTHENTICATED
+      user: LoginResponse
+      isFetching: boolean
+      refetchData: () => Promise<void>
+    }
+  | {
+      status: AUTH_STATES.ERROR
+      user: null
+      isFetching: boolean
+      refetchData: () => Promise<void>
+    }
+
+export const AuthContext = createContext<AuthContextValue | null>(null)
 
 export const AuthProvider = () => {
-  const { data, isLoading, isFetching, refetch } = useMeQuery(null)
+  const { data, isLoading, isFetching, isError, refetch } = useMeQuery(null)
 
-  const value = useMemo(
-    () => ({
-      user: data ?? null,
-      status: isLoading
-        ? AUTH_STATES.LOADING
-        : data
-          ? AUTH_STATES.AUTHENTICATED
-          : AUTH_STATES.UNAUTHENTICATED,
+  const refetchData = useCallback(async () => {
+    await refetch()
+  }, [refetch])
+
+  const value = useMemo<AuthContextValue>(() => {
+    const base = {
       isFetching,
-      refetchData: async () => {
-        await refetch()
-      },
-    }),
-    [data, isLoading, isFetching, refetch],
-  )
+      refetchData,
+    }
+
+    if (isLoading) {
+      return {
+        ...base,
+        status: AUTH_STATES.LOADING,
+        user: null,
+      }
+    }
+
+    if (isError) {
+      return {
+        ...base,
+        status: AUTH_STATES.ERROR,
+        user: null,
+      }
+    }
+
+    if (!data) {
+      return {
+        ...base,
+        status: AUTH_STATES.UNAUTHENTICATED,
+        user: null,
+      }
+    }
+
+    return {
+      ...base,
+      status: AUTH_STATES.AUTHENTICATED,
+      user: data,
+    }
+  }, [data, isLoading, isError, isFetching, refetchData])
 
   return (
     <AuthContext.Provider value={value}>
