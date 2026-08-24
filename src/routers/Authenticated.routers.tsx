@@ -1,9 +1,10 @@
+import type { RouteObject } from "react-router"
 import { AuthProvider } from "../contexts"
 import { dashboardRoutes } from "./Dashboard.routers"
 import { AuthenticatedGuardian, UserSetUpGuardian } from "./Guardians"
 import { onboardingRoutes } from "./Onboarding.routers"
 
-export const authenticatedRoutes = () => [
+export const authenticatedRoutes = (): RouteObject[] => [
   {
     element: <AuthProvider />,
     children: [
@@ -11,9 +12,11 @@ export const authenticatedRoutes = () => [
         element: <AuthenticatedGuardian />,
         children: [
           {
+            index: true,
             element: <UserSetUpGuardian />,
-            children: [...onboardingRoutes(), ...dashboardRoutes()],
           },
+          ...onboardingRoutes(),
+          ...dashboardRoutes(),
         ],
       },
     ],

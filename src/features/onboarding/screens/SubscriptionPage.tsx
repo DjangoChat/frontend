@@ -16,11 +16,11 @@ import {
 } from "../../../redux"
 import type { CheckOutSessionRequest } from "../../../types"
 
-const PERIODS = ["monthly", "trimester", "annual"]
+const PERIODS = ["MONTHLY", "TRIMESTER", "ANNUAL"]
 
 export const SubscriptionPage = () => {
   const [checkOutSession, { isLoading }] = useCheckOutSessionMutation()
-  const [selectedPeriod, setSelectedPeriod] = useState("monthly")
+  const [selectedPeriod, setSelectedPeriod] = useState("MONTHLY")
   const { data } = useGetAllPricesQuery({
     period__name: selectedPeriod,
   })

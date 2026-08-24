@@ -28,7 +28,7 @@ import { ThemeToggleButton } from "../components/ThemeToggleButton"
 import type { RouteKey } from "../constants"
 import { ROUTES_KEYS } from "../constants"
 import { GROUPS, type GroupKey } from "../constants/Groups"
-import { useAuth } from "../hooks"
+import { useAuthenticatedAuth } from "../hooks"
 
 type MenuItem = {
   id: string
@@ -136,12 +136,8 @@ const BOTTOM_MENU_ITEMS: MenuItem[] = [
 ]
 
 function Sidebar() {
-  const { user } = useAuth()
+  const { user } = useAuthenticatedAuth()
   const navigate = useNavigate()
-
-  if (!user?.user) {
-    return null
-  }
 
   const userGroup = user.user.group as GroupKey
   const menuItems = MENU_ITEMS_BY_GROUP[userGroup]

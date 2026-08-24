@@ -1,8 +1,9 @@
+import type { RouteObject } from "react-router"
 import { ROUTES_KEYS } from "../constants"
 import { RegisterPage, RegisterSuccessPage, SignInPage } from "../features/auth"
 import { LandingPage } from "../features/public"
 
-export const publicRouters = () => [
+export const publicRouters = (): RouteObject[] => [
   {
     element: <LandingPage />,
     index: true,

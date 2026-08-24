@@ -1,3 +1,4 @@
+import type { RouteObject } from "react-router"
 import { ROUTES_KEYS } from "../constants"
 import { ProfilePage, SubscriptionPage } from "../features/onboarding"
 import { OnboardingLayout } from "../layouts"
@@ -7,31 +8,32 @@ import {
   OnboardingSubscriptionGuardian,
 } from "./Guardians"
 
-export const onboardingRoutes = () => [
+export const onboardingRoutes = (): RouteObject[] => [
   {
     path: ROUTES_KEYS.ONBOARDING.slice(1),
-    element: <OnboardingGuardian />,
+    element: <OnboardingLayout />,
     children: [
       {
-        element: <OnboardingLayout />,
+        index: true,
+        element: <OnboardingGuardian />,
+      },
+      {
+        path: "profile/",
+        element: <OnboardingProfileGuardian />,
         children: [
           {
-            path: "profile/",
-            element: <OnboardingProfileGuardian />,
-            children: [
-              {
-                element: <ProfilePage />,
-              },
-            ],
+            index: true,
+            element: <ProfilePage />,
           },
+        ],
+      },
+      {
+        path: "subscription/",
+        element: <OnboardingSubscriptionGuardian />,
+        children: [
           {
-            path: "subscription/",
-            element: <OnboardingSubscriptionGuardian />,
-            children: [
-              {
-                element: <SubscriptionPage />,
-              },
-            ],
+            index: true,
+            element: <SubscriptionPage />,
           },
         ],
       },

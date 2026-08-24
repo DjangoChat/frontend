@@ -76,6 +76,16 @@ export const OnboardingSubscriptionGuardian = () => {
   return <Outlet />
 }
 
+export const DashboardGuardian = () => {
+  const { user } = useAuthenticatedAuth()
+
+  if (user.user.required || user.subscription.required) {
+    return <Navigate to={ROUTES_KEYS.ONBOARDING} />
+  }
+
+  return <Outlet />
+}
+
 export const RoleGuardian = ({ children, roles }: RoleGuardianProps) => {
   const { user } = useAuthenticatedAuth()
 

@@ -12,7 +12,7 @@ export const ENDPOINT = {
   STRIPE: "/stripe/",
   AGENT: "/agents/",
   NATURE: "/natures/",
-  ONBOARDING: "/onboarding/",
+  ONBOARDING: "/onboard/",
 } as const
 
 export type Endpoint = (typeof ENDPOINT)[keyof typeof ENDPOINT]
