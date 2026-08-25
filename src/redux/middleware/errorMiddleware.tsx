@@ -1,7 +1,7 @@
 import type { Middleware } from "@reduxjs/toolkit"
 import { isRejectedWithValue } from "@reduxjs/toolkit"
+import { addNotification } from "../../redux/slices/NotificationSlice"
 import type { CompleteError } from "../../types"
-import { addNotification } from "../slices/NotificationSlice"
 
 type RejectedPayload = {
   status: number

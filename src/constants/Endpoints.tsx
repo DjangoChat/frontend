@@ -9,6 +9,7 @@ export const ENDPOINT = {
   ME: "auth/me/",
   PROFILE: "/profiles/",
   PRICE: "/prices/",
+  PARTICIPANT: "/participant/",
   STRIPE: "/stripe/",
   AGENT: "/agents/",
   NATURE: "/natures/",

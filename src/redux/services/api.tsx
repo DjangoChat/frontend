@@ -51,6 +51,6 @@ const baseQueryWithReauth: BaseQueryFn<
 export const api = createApi({
   reducerPath: "splitApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Auth", "Price"],
+  tagTypes: ["Auth", "Price", "Participant"],
   endpoints: () => ({}),
 })

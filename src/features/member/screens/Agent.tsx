@@ -8,10 +8,11 @@ import {
   Stack,
   Typography,
 } from "@mui/joy"
-import { useEffect, useMemo, useRef } from "react"
+import { useMemo } from "react"
 import { useIntlayer } from "react-intlayer"
+import { useDebounce } from "../../../hooks/useDebounce"
 import { useAppDispatch, useAppSelector } from "../../../redux"
-import { useGetAllAgentsQuery } from "../../../redux/services/AgentApi"
+import { useGetAllParticipantsQuery } from "../../../redux/services/ParticipantApi"
 import {
   setOffset,
   setSearchQuery,
@@ -22,16 +23,19 @@ import type { Agent as AgentType } from "../../../types/Agent"
 
 export const Agent = () => {
   const content = useIntlayer("agent") as any
+
   const dispatch = useAppDispatch()
-  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
   const { searchQuery, selectedNature, selectedType, limit, offset } =
     useAppSelector(state => state.agentPage)
 
-  // Build query parameters
+  // Use debounce hook for search query
+  const debouncedSearchQuery = useDebounce(searchQuery, 500)
+
   const queryParams = {
     limit,
     offset,
-    ...(searchQuery && { search: searchQuery }),
+    ...(debouncedSearchQuery && { search: debouncedSearchQuery }),
     ...(selectedNature && { natures__name: selectedNature }),
     ...(selectedType && { agent_type: selectedType }),
   }
@@ -40,31 +44,10 @@ export const Agent = () => {
     data: agentsResponse,
     isLoading: agentsLoading,
     error: agentsError,
-  } = useGetAllAgentsQuery(queryParams)
-
-  // Handle debounced search
-  useEffect(() => {
-    // Clear existing timeout
-    if (debounceTimeoutRef.current) {
-      clearTimeout(debounceTimeoutRef.current)
-    }
-
-    // Set new timeout for 500ms
-    debounceTimeoutRef.current = setTimeout(() => {
-      // The search is now applied via the query parameters above
-      debounceTimeoutRef.current = null
-    }, 500)
-
-    return () => {
-      if (debounceTimeoutRef.current) {
-        clearTimeout(debounceTimeoutRef.current)
-      }
-    }
-  }, [searchQuery])
+  } = useGetAllParticipantsQuery(queryParams)
 
   const handleChatClick = (agentId: string) => {
     console.log("Chat clicked for agent:", agentId)
-    // TODO: Navigate to chat page with agent
   }
 
   const handlePageChange = (page: number) => {

@@ -8,9 +8,6 @@ export type AgentParameters = {
 
 export type Agent = {
   id: UUID
-  name: string
-  description: string
-  avatar: string
   natures: string[]
   agent_type: string
   has_permission: boolean
