@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router"
 import { LoadingPage } from "../components"
 import { AUTH_STATES, ROUTES_KEYS } from "../constants"
 import type { GroupKey } from "../constants/Groups"
-import { useAuth, useAuthenticatedAuth } from "../hooks"
+import { useAuth, useAuthenticatedAuth, useLoadParticipants } from "../hooks"
 
 type RoleGuardianProps = {
   children?: ReactNode
@@ -78,7 +78,7 @@ export const OnboardingSubscriptionGuardian = () => {
 
 export const DashboardGuardian = () => {
   const { user } = useAuthenticatedAuth()
-  // useLoadParticipants()
+  useLoadParticipants()
 
   if (user.user.required || user.subscription.required) {
     return <Navigate to={ROUTES_KEYS.ONBOARDING} />
