@@ -1,11 +1,13 @@
 import type { UUID } from "crypto"
-import type { RepresentationKey } from "../constants"
+import type { ParticipantTypeKey, RepresentationKey } from "../constants"
 import type { Agent } from "./Agent"
 import type { Pagination, PaginationWrapper, Search } from "./Utils"
 
 export type ParticipantParameters = {
-  participant_type: string
+  participant_type: ParticipantTypeKey
   representation: RepresentationKey
+  agent__agent_type: string
+  agent__natures__name: string
 }
 
 export type ParticipantBasic = {

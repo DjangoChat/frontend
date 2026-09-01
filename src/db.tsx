@@ -7,7 +7,8 @@ export const db = new Dexie("mydb", { addons: [dexieCloud] }) as Dexie & {
 }
 
 db.version(1).stores({
-  participants: `@id,
+  participants: `
+  id,
   first_name,
   last_name,
   nickname,

@@ -12,13 +12,18 @@ export const useLoadParticipants = () => {
   useEffect(() => {
     if (data && !isError) {
       const participants = data.results as ParticipantBasic[]
+
       if (participants.length > 0) {
-        db.participants.bulkPut(participants).catch((error: unknown) => {
+        const records = participants.map(participant => ({
+          ...participant,
+        }))
+
+        db.participants.bulkPut(records).catch((error: unknown) => {
           console.error("Failed to store participants in DB:", error)
         })
       }
     }
-  }, [data, isLoading, isError])
+  }, [data, isError])
 
   return {
     isLoading,

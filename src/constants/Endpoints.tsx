@@ -14,6 +14,7 @@ export const ENDPOINT = {
   AGENT: "/agents/",
   NATURE: "/natures/",
   ONBOARDING: "/onboard/",
+  CHAT: "/chats/",
 } as const
 
 export type Endpoint = (typeof ENDPOINT)[keyof typeof ENDPOINT]

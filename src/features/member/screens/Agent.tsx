@@ -8,8 +8,11 @@ import {
   Stack,
   Typography,
 } from "@mui/joy"
+import { useLiveQuery } from "dexie-react-hooks"
 import { useMemo } from "react"
 import { useIntlayer } from "react-intlayer"
+import { PARTICIPANT_TYPE, REPRESENTATIONS } from "../../../constants"
+import { db } from "../../../db"
 import { useDebounce } from "../../../hooks/useDebounce"
 import { useAppDispatch, useAppSelector } from "../../../redux"
 import { useGetAllParticipantsQuery } from "../../../redux/services/ParticipantApi"
@@ -19,7 +22,7 @@ import {
   setSelectedNature,
   setSelectedType,
 } from "../../../redux/slices/AgentSlice"
-import type { Agent as AgentType } from "../../../types/Agent"
+import type { ParticipantDetailed } from "../../../types/Participant"
 
 export const Agent = () => {
   const content = useIntlayer("agent") as any
@@ -36,8 +39,10 @@ export const Agent = () => {
     limit,
     offset,
     ...(debouncedSearchQuery && { search: debouncedSearchQuery }),
-    ...(selectedNature && { natures__name: selectedNature }),
-    ...(selectedType && { agent_type: selectedType }),
+    ...(selectedNature && { agent__natures__name: selectedNature }),
+    ...(selectedType && { agent__agent_type: selectedType }),
+    ...{ participant_type: PARTICIPANT_TYPE.AGENT },
+    ...{ representation: REPRESENTATIONS.DETAILED },
   }
 
   const {
@@ -45,6 +50,9 @@ export const Agent = () => {
     isLoading: agentsLoading,
     error: agentsError,
   } = useGetAllParticipantsQuery(queryParams)
+
+  // Load participants from IndexedDB
+  const participantsFromDB = useLiveQuery(() => db.participants.toArray())
 
   const handleChatClick = (agentId: string) => {
     console.log("Chat clicked for agent:", agentId)
@@ -55,10 +63,35 @@ export const Agent = () => {
     dispatch(setOffset(newOffset))
   }
 
-  const agents = useMemo(
-    () => (agentsResponse?.results as AgentType[] | undefined) ?? [],
-    [agentsResponse],
-  )
+  // Merge API data (ParticipantDetailed) with IndexedDB data (ParticipantBasic)
+  const agents = useMemo(() => {
+    if (!agentsResponse?.results || !participantsFromDB) return []
+
+    const detailedParticipants = agentsResponse.results as ParticipantDetailed[]
+
+    return detailedParticipants
+      .map(participant => {
+        // Find matching participant from IndexedDB
+        const basicInfo = participantsFromDB.find(p => p.id === participant.id)
+
+        // Skip if no details or basic info
+        if (!participant.details || !basicInfo) return null
+
+        // Combine agent details with basic participant info
+        const fullName =
+          `${basicInfo.first_name || ""} ${basicInfo.last_name || ""}`.trim()
+
+        return {
+          id: participant.id,
+          name: fullName || basicInfo.nickname || "Unknown Agent",
+          avatar: basicInfo.avatar as unknown as string | undefined,
+          agent_type: participant.details.agent_type,
+          natures: participant.details.natures,
+          has_permission: participant.details.has_permission,
+        }
+      })
+      .filter((agent): agent is NonNullable<typeof agent> => agent !== null)
+  }, [agentsResponse, participantsFromDB])
 
   const totalCount = agentsResponse?.count ?? 0
   const totalPages = Math.ceil(totalCount / limit)
@@ -227,30 +260,12 @@ export const Agent = () => {
                         <Typography
                           level="h3"
                           sx={{
-                            mb: 0.5,
+                            mb: 1,
                             fontWeight: 700,
                             fontSize: "1rem",
                           }}
                         >
                           {agent.name}
-                        </Typography>
-
-                        {/* Agent Description */}
-                        <Typography
-                          level="body-xs"
-                          sx={{
-                            mb: 1,
-                            color: "text.secondary",
-                            flex: 1,
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            display: "-webkit-box",
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: "vertical",
-                            fontSize: "0.8rem",
-                          }}
-                        >
-                          {agent.description}
                         </Typography>
 
                         {/* Agent Type and Natures */}
