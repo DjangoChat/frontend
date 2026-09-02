@@ -8,7 +8,9 @@ import {
   profileReducer,
   registerReducer,
   signinReducer,
+  socketReducer,
 } from "./slices"
+import { socketMiddleware } from "./sockets"
 
 export const store = configureStore({
   reducer: {
@@ -18,9 +20,14 @@ export const store = configureStore({
     signin: signinReducer,
     register: registerReducer,
     profile: profileReducer,
+    sockets: socketReducer,
   },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(api.middleware, errorMiddleware),
+    getDefaultMiddleware().concat(
+      api.middleware,
+      errorMiddleware,
+      socketMiddleware,
+    ),
   devTools: true,
 })
 
@@ -33,3 +40,4 @@ export const useAppSelector = useSelector.withTypes<RootState>()
 
 export * from "./services"
 export * from "./slices"
+export * from "./sockets"

@@ -1,4 +1,5 @@
 export * from "./useAuth"
+export * from "./useChatSocket"
 export * from "./useDebounce"
 export * from "./useLoadParticipants"
 export * from "./useLocalStorage"
