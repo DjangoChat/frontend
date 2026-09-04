@@ -10,6 +10,9 @@ export const chatApi = api.injectEndpoints({
         url: `${ENDPOINT.CHAT}${buildQueryString(params)}`,
         method: "GET",
       }),
+      providesTags: ["Chat"],
     }),
   }),
 })
+
+export const { useGetAllChatsQuery } = chatApi

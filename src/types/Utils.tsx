@@ -19,6 +19,23 @@ export type PaginationWrapper<T> = {
 }
 
 /**
+ * Query params for DRF's CursorPagination (see ChatPagination/MessagePagination
+ * on the backend). Unlike offset pagination, cursor pagination has no
+ * `count`/`offset` and is driven entirely by opaque `cursor` tokens returned
+ * in `next`/`previous`.
+ */
+export type CursorPagination = {
+  cursor: string
+  page_size: number
+}
+
+export type CursorPaginationWrapper<T> = {
+  next: string | null
+  previous: string | null
+  results: T[]
+}
+
+/**
  * Converts an object with optional query parameters into a query string
  * Only includes properties that are defined and not null
  * @param params - Object with optional pagination, search, ordering, and filter parameters

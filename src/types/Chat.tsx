@@ -1,7 +1,11 @@
 import type { UUID } from "crypto"
 import type { ChatTypeKey } from "../constants"
 import type { MessageBasic } from "../types/Message"
-import type { Pagination, PaginationWrapper, Search } from "../types/Utils"
+import type {
+  CursorPagination,
+  CursorPaginationWrapper,
+  Search,
+} from "../types/Utils"
 
 export type ChatParameters = {
   chat_type: ChatTypeKey
@@ -38,8 +42,8 @@ export type ChatDetailed = {
   metadata: ChatParticipantMetadata
 }
 
-export type AllChatBasicResponse = PaginationWrapper<ChatBasic>
-export type AllChatDetailResponse = PaginationWrapper<ChatDetailed>
-export type AllChatRequest = Partial<Pagination> &
+export type AllChatBasicResponse = CursorPaginationWrapper<ChatBasic>
+export type AllChatDetailResponse = CursorPaginationWrapper<ChatDetailed>
+export type AllChatRequest = Partial<CursorPagination> &
   Partial<Search> &
   Partial<ChatParameters>

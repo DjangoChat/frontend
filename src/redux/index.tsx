@@ -4,6 +4,7 @@ import { errorMiddleware } from "./middleware"
 import { api } from "./services"
 import {
   agentReducer,
+  chatReducer,
   notificationReducer,
   profileReducer,
   registerReducer,
@@ -16,6 +17,7 @@ export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     agentPage: agentReducer,
+    chatPage: chatReducer,
     notification: notificationReducer,
     signin: signinReducer,
     register: registerReducer,

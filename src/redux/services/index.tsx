@@ -1,6 +1,7 @@
 export * from "./AgentApi"
 export * from "./api"
 export * from "./AuthApi"
+export * from "./ChatApi"
 export * from "./NatureApi"
 export * from "./OnboardingApi"
 export * from "./ParticipantApi"
